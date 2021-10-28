@@ -1,11 +1,109 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="#" />
+    <!-- Boostrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+    <!-- Custom CSS -->
+    <link type="text/css" rel="stylesheet" href="./stylesheets/style.css" />
+    <title>Personal Finance!</title>
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <div class="wrapper">
+      <div class="container">
+        <div class="row">
+          <div class="col-8">
+            <div class="income-container">
+              <!-- Submit income data anonomyously-->
+              <form id="anonIncomeSubmission" action="">
+                <input
+                  name="salary"
+                  type="number"
+                  min="0"
+                  placeholder="Salary"
+                  required
+                />
+                <select name="state" required>
+                  <option value="" disable selected hidden>
+                    Select Domicile State
+                  </option>
+                  <option value="New York">New York</option>
+                  <option value="California">California</option>
+                  <option value="Texas">Texas</option>
+                  <option value="Florida">Florida</option>
+                </select>
+                <select name="marital" required>
+                  <option value="" disable selected hidden>
+                    Select Marital Status
+                  </option>
+                  <option value="Single">Single</option>
+                  <option value="MFJ">Married Filing Jointly</option>
+                  <option value="MFS">Married Filing Separately</option>
+                </select>
+                <button type="submit" id="income-button">Submit</button>
+              </form>
+            </div>
+            <!-- income-container end -->
+            <div class="row">
+              <div class="div" id="taxAmountDiv"></div>
+            </div>
+          </div>
+          <!-- col-8 end -->
+          <div class="col-4">
+            <form action="/login" method="post">
+              <div class="login-container">
+                <label for="username"><b>Username</b></label>
+                <input
+                  type="text"
+                  placeholder="Enter Username"
+                  name="uname"
+                  required
+                />
+
+                <label for="psw"><b>Password</b></label>
+                <input
+                  type="password"
+                  placeholder="Enter Password"
+                  name="psw"
+                  required
+                />
+                <button type="submit" id="login-button">Login</button>
+              </div>
+              <span class="create-new-user"
+                ><a href="#">Create New User</a></span
+              >
+            </form>
+          </div>
+          <!-- col-4 end -->
+        </div>
+      </div>
+    </div>
+
+    <!-- anonIncomeSubmission.js-->
+    <script
+      type="text/javascript"
+      src="../javascripts/anonIncomeSubmission.js"
+    ></script>
+
+    <!-- anonmyous submission alert -->
+    <!--     <script>
+      <% if (locals.federalTaxAmount && locals.stateTaxAmount && locals.ficaTaxAmount) { %>
+        alert(`Federal Tax Amount: <%=federalTaxAmount%>\nState Tax Amount: <%= stateTaxAmount%>\nSocial Security & Medicare Tax Amount: <%= ficaTaxAmount%>\nTotal Estimated Tax Amount: <%= totalTaxAmount%>`);
+      <% } %>
+    </script> -->
+
+    <!-- Bootstrap -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>
