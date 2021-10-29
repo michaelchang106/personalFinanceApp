@@ -23,7 +23,7 @@ input[type="password"] {
 }
 
 /* Set a style for all buttons */
-#login-button {
+#loginButton {
   background-color: #04aa6d;
   color: white;
   padding: 14px 20px;
@@ -33,7 +33,7 @@ input[type="password"] {
   width: 100%;
 }
 
-#income-button {
+#incomeButton {
   background-color: #04aa6d;
   color: white;
   padding: 14px 20px;

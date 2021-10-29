@@ -20,7 +20,7 @@
       <div class="container">
         <div class="row">
           <div class="col-8">
-            <div class="income-container">
+            <div class="incomeContainer">
               <!-- Submit income data anonomyously-->
               <form id="anonIncomeSubmission" action="">
                 <input
@@ -47,39 +47,41 @@
                   <option value="MFJ">Married Filing Jointly</option>
                   <option value="MFS">Married Filing Separately</option>
                 </select>
-                <button type="submit" id="income-button">Submit</button>
+                <button type="submit" id="incomeButton">Submit</button>
               </form>
             </div>
-            <!-- income-container end -->
+            <!-- incomeContainer end -->
             <div class="row">
               <div class="div" id="taxAmountDiv"></div>
             </div>
           </div>
           <!-- col-8 end -->
           <div class="col-4">
-            <form action="/login" method="post">
-              <div class="login-container">
+            <div class="loginContainer" id="loginContainerDiv">
+              <form id="loginSubmission" action="">
                 <label for="username"><b>Username</b></label>
                 <input
                   type="text"
                   placeholder="Enter Username"
-                  name="uname"
+                  name="username"
                   required
                 />
 
-                <label for="psw"><b>Password</b></label>
+                <label for="password"><b>Password</b></label>
                 <input
                   type="password"
                   placeholder="Enter Password"
-                  name="psw"
+                  name="password"
                   required
                 />
-                <button type="submit" id="login-button">Login</button>
-              </div>
-              <span class="create-new-user"
-                ><a href="#">Create New User</a></span
-              >
-            </form>
+                <button type="submit" id="loginButton">Login</button>
+
+                <span class="createNewUser"
+                  ><a href="#">Create New User</a></span
+                >
+              </form>
+            </div>
+            <!-- loginContainer end -->
           </div>
           <!-- col-4 end -->
         </div>
@@ -92,12 +94,8 @@
       src="../javascripts/anonIncomeSubmission.js"
     ></script>
 
-    <!-- anonmyous submission alert -->
-    <!--     <script>
-      <% if (locals.federalTaxAmount && locals.stateTaxAmount && locals.ficaTaxAmount) { %>
-        alert(`Federal Tax Amount: <%=federalTaxAmount%>\nState Tax Amount: <%= stateTaxAmount%>\nSocial Security & Medicare Tax Amount: <%= ficaTaxAmount%>\nTotal Estimated Tax Amount: <%= totalTaxAmount%>`);
-      <% } %>
-    </script> -->
+    <!-- checkLogin.js-->
+    <script type="text/javascript" src="../javascripts/checkLogin.js"></script>
 
     <!-- Bootstrap -->
     <script

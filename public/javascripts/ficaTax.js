@@ -9,16 +9,20 @@ let ficaTax = (salary, marital) => {
   }
 
   //medicare tax
-  if (salary > 200000 && (marital === "Single" || marital === "MFS")) {
-    taxAmount += (salary - 200000) * 0.009 + 2900;
-  } else if (salary <= 200000 && (marital === "Single" || marital === "MFS")) {
-    taxAmount += salary * 0.0145;
-  } else if (salary > 250000 && marital === "MFJ") {
-    taxAmount += (salary - 250000) * 0.009 + 3625;
-  } else if (salary <= 250000 && marital === "MFJ") {
-    taxAmount += salary * 0.0145;
+  if (marital === "Single" || marital === "MFS") {
+    if (salary > 0 && salary <= 200000) {
+      taxAmount += 0.0145 * salary;
+    } else if (salary > 200000) {
+      taxAmount += (salary - 200000) * 0.009;
+    }
+  } else if (marital === "MFJ") {
+    if (salary > 0 && salary <= 250000) {
+      taxAmount += 0.0145 * salary;
+    } else if (salary > 250000) {
+      taxAmount += (salary - 250000) * 0.009;
+    }
   }
-
+  
   return taxAmount;
 };
 

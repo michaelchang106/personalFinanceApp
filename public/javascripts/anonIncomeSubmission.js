@@ -28,10 +28,10 @@ anonIncomeSubmission.addEventListener("submit", async (event) => {
     }
     taxAmount = await res.json();
   } catch (error) {
-    taxAmountDiv.innerHTML = error.msg();
+    taxAmountDiv.innerHTML = error.message;
   }
 
-  // clear the current text
+  // clear the current HTML and do DOM manipulation
   taxAmountDiv.innerHTML = "";
   for (let [key, value] of Object.entries(taxAmount)) {
     let divTax = document.createElement("div");
