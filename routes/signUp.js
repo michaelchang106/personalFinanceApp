@@ -23,7 +23,7 @@ router.post("/create", async (req, res) => {
   await userLoginInfo.create(record).catch((err) => {
     res.send("ERROR");
   });
-  res.redirect("/signUp");
+  res.redirect("/");
 });
 
 router.get("/getUser", async (req, res) => {
