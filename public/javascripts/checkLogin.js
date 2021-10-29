@@ -37,7 +37,6 @@ loginSubmission.addEventListener("submit", async (event) => {
     }
 
     loginInfo = await res.json();
-  
   } catch (error) {
     loginContainerDiv.innerHTML = error.message;
   }
@@ -48,10 +47,11 @@ loginSubmission.addEventListener("submit", async (event) => {
     loginContainerDiv.innerHTML = `Welcome back ${loginInfo.firstName} ${loginInfo.lastName}`;
     // RUN successfulLogin.js
     // * this will change the FormSubmission from anonIncomeSubmission to userIncomeSubmission
+    //    * create a new route for user income submission ->
+    //    * Create a userID variable -> used to pull user info from collection (actual, budget, income)
     // * add in the ability to add budget and actual stuff
 
-
-  // IF USER DID NOT LOGIN SUCCESFULLY
+    // IF USER DID NOT LOGIN SUCCESFULLY
   } else {
     alert(loginInfo.error);
   }
