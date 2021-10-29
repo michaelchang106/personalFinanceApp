@@ -3,8 +3,7 @@ let express = require("express");
 let path = require("path");
 let cookieParser = require("cookie-parser");
 let logger = require("morgan");
-
-let indexRouter = require("./routes/index");
+let indexRouter = require("./routes/index.js");
 let signupRouter = require("./routes/signup");
 
 let app = express();
