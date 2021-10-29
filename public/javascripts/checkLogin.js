@@ -9,8 +9,8 @@
 //incorrect login
 // don't render HTML
 
-let loginSubmission = document.getElementById("loginSubmission");
-let loginContainerDiv = document.getElementById("loginContainerDiv");
+let loginSubmission = document.getElementById("loginSubmission"); //FORM HTML
+let loginContainerDiv = document.getElementById("loginContainerDiv"); //DIV HTML
 
 loginSubmission.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -37,6 +37,7 @@ loginSubmission.addEventListener("submit", async (event) => {
     }
 
     loginInfo = await res.json();
+  
   } catch (error) {
     loginContainerDiv.innerHTML = error.message;
   }
@@ -44,7 +45,7 @@ loginSubmission.addEventListener("submit", async (event) => {
   if (loginInfo.userID) {
     // clear the current HTML and do DOM manipulation
     loginContainerDiv.innerHTML = "";
-    loginContainerDiv.innerHTML = `Welcome back ${loginInfo.userID}`;
+    loginContainerDiv.innerHTML = `Welcome back ${loginInfo.firstName} ${loginInfo.lastName}`;
     // RUN successfulLogin.js
     // * this will change the FormSubmission from anonIncomeSubmission to userIncomeSubmission
     // * add in the ability to add budget and actual stuff

@@ -49,7 +49,9 @@ router.post("/loginSubmission", async function (req, res) {
 
   //check if username exists
   try {
+    
     const record = await userLoginInfo.findOne({ userID: loginInfo.username });
+    
     if (record.password === loginInfo.password) {
       res.json(record);
     } else {
