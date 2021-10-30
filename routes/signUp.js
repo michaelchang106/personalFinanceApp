@@ -2,12 +2,12 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
-const userLoginInfo = require("../database/userSchema.js");
+const UserLoginDB = require("../database/userSchema.js");
 
 mongoose.connect("mongodb://localhost/UserLoginDB");
 
-// console.log(userLoginInfo);
-// console.log(mongoose.model("UserLoginInfo")); //How I named the model
+// console.log(UserLoginDB);
+// console.log(mongoose.model("UserLoginDB")); //How I named the model
 
 //
 
@@ -20,19 +20,19 @@ router.get("/", function (req, res) {
 router.post("/create", async (req, res) => {
   const record = req.body;
   console.log(record);
-  await userLoginInfo.create(record).catch((err) => {
+  await UserLoginDB.create(record).catch((err) => {
     res.send("ERROR");
   });
   res.redirect("/");
 });
 
 router.get("/getUser", async (req, res) => {
-  const record = await userLoginInfo.find({ userID: "cats" });
+  const record = await UserLoginDB.find({ userID: "cats" });
   res.json(record);
 });
 
 // Place to store user info - until we learn mongoDB.
-// const users = require("../database/userInfo.json");
+// const users = require("../database/UserLoginDB.json");
 // //Connect to the database
 // mongoose.connect("mongodb://localhost/")
 
@@ -51,7 +51,7 @@ router.get("/getUser", async (req, res) => {
 //   encryptPassword(user).then(() => {
 //     console.log("password encrypted.");
 //     users.push(user);
-//     fs.writeFile("../database/userInfo.json", JSON.stringify(users), (err) => {
+//     fs.writeFile("../database/UserLoginDB.json", JSON.stringify(users), (err) => {
 //       // Checking for errors
 //       if (err) throw err;
 //       console.log("Done writing"); // Success

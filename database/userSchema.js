@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-// const Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
-const taxData = new mongoose.Schema({
+const taxData = new Schema({
   salary: { type: Number, required: true },
   state: {
     type: String,
@@ -11,19 +11,19 @@ const taxData = new mongoose.Schema({
   marital: { type: String, enum: ["Single", "MFS", "MFJ"], required: true },
 });
 
-// const actualData = new mongoose.Schema({
+// const actualData = new Schema ({
 //   salary: { type: Number, required: true },
 //   state: { type: String, enum: ["California", "New York", "Texas", "Florida"] },
 //   marital: { type: String, enum: ["Single", "MFS", "MFJ"] },
 // });
 
-// const budgetData = new mongoose.Schema({
+// const budgetData = new Scehma ({
 //   salary: { type: Number, required: true },
 //   state: { type: String, enum: ["California", "New York", "Texas", "Florida"] },
 //   marital: { type: String, enum: ["Single", "MFS", "MFJ"] },
 // });
 
-const userLoginInfo = new mongoose.Schema({
+const UserLoginDB = new Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   userID: { type: String, required: true },
@@ -34,6 +34,6 @@ const userLoginInfo = new mongoose.Schema({
   budgetData: { type: Object },
 });
 
-const model = mongoose.model("userLoginInfo", userLoginInfo);
+const model = mongoose.model("UserLoginDB", UserLoginDB);
 
 module.exports = model;

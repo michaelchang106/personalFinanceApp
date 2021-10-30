@@ -3,24 +3,35 @@
 let incomeSubmission = document.getElementById("anonIncomeSubmission"); //anon first by default
 let taxAmountDiv = document.getElementById("taxAmountDiv");
 
+// listen for click on incomeSubmission button
 incomeSubmission.addEventListener("submit", async (event) => {
   event.preventDefault();
 
+  // grab form data after click
   const formData = new FormData(incomeSubmission);
 
   // convert FormData to JSON
   const plainFormData = Object.fromEntries(formData.entries());
-  const formDataJSONString = JSON.stringify(plainFormData);
+  let formDataJSONString = JSON.stringify(plainFormData);
+
+  // hacky way to add userID from localStorage to update in Database
+  let oneLessThanLength = formDataJSONString.length - 1;
+  formDataJSONString = formDataJSONString.slice(0, oneLessThanLength);
+  // add the userID
+  formDataJSONString += `,"userID":"${localStorage.getItem("userID")}"}`;
 
   let taxAmount;
 
   try {
+    //switch fetchAction between anon and user for routing
     let fetchAction;
     if (incomeSubmission.id === "anonIncomeSubmission") {
       fetchAction = "/anonIncomeSubmission";
     } else if (incomeSubmission.id === "userIncomeSubmission") {
       fetchAction = "/userIncomeSubmission";
     }
+
+    // fetch post anon or user -- IncomeSubmission
     const res = await fetch(fetchAction, {
       method: "POST",
       headers: {
@@ -32,7 +43,11 @@ incomeSubmission.addEventListener("submit", async (event) => {
     if (!res.ok) {
       throw new Error("Response not ok " + res.status);
     }
+
+    // assign taxAmount the response json
     taxAmount = await res.json();
+
+    //catch error
   } catch (error) {
     taxAmountDiv.innerHTML = error.message;
   }

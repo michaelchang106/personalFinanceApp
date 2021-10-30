@@ -5,9 +5,12 @@ let router = express.Router();
 let federalTax = require("../public/javascripts/federalTax.js");
 let ficaTax = require("../public/javascripts/ficaTax.js");
 let stateTax = require("../public/javascripts/stateTax.js");
-let dollarUSLocale = Intl.NumberFormat("en-US");
+let dollarUSLocale = Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+});
 
-// for login authentication
+// for login encryption
 const bcrypt = require("bcrypt");
 
 // for database connection
@@ -22,7 +25,7 @@ router.get("/", function (req, res) {
 
 /* FETCH POST anonIncomeSubmission*/
 router.post("/anonIncomeSubmission", function (req, res) {
-  console.log("ANON POST SUBMISSION");
+  console.log("ANONOMYOUS POST INCOME SUBMISSION");
   const anonInfo = req.body;
 
   const salary = anonInfo.salary;
@@ -35,24 +38,29 @@ router.post("/anonIncomeSubmission", function (req, res) {
   const totalTaxAmount = federalTaxAmount + ficaTaxAmount + stateTaxAmount;
 
   res.json({
-    Federal: dollarUSLocale.format(federalTaxAmount.toFixed(2)),
-    FICA: dollarUSLocale.format(ficaTaxAmount.toFixed(2)),
-    State: dollarUSLocale.format(stateTaxAmount.toFixed(2)),
-    Total: dollarUSLocale.format(totalTaxAmount.toFixed(2)),
+    Federal: dollarUSLocale.format(federalTaxAmount),
+    FICA: dollarUSLocale.format(ficaTaxAmount),
+    State: dollarUSLocale.format(stateTaxAmount),
+    Total: dollarUSLocale.format(totalTaxAmount),
   });
 });
 
 /* FETCH POST userIncomeSubmission*/
-router.post("/userIncomeSubmission", function (req, res) {
-  // need too add DB CRUD for user income data
-  // db.collection.update(
-  //   { _id: "1", "projectList.projectID": "Spring" },
-  //   { $set: { "projectList.$.resourceIDList": ["Something", "new"] } }
-  // );
-
-  console.log("USER POST SUBMISSION -- NEED TO UPDATE DATABSE");
-
+router.post("/userIncomeSubmission", async function (req, res) {
+  console.log("USER POST INCOME SUBMISSION");
   const userInfo = req.body;
+
+  // filter and update definitions
+  let filter = { userID: userInfo.userID };
+  let update = {
+    taxData: {
+      salary: userInfo.salary,
+      state: userInfo.state,
+      marital: userInfo.marital,
+    },
+  };
+  //filter and update into database
+  await userLoginInfo.findOneAndUpdate(filter, update);
 
   const salary = userInfo.salary;
   const state = userInfo.state;
@@ -64,27 +72,23 @@ router.post("/userIncomeSubmission", function (req, res) {
   const totalTaxAmount = federalTaxAmount + ficaTaxAmount + stateTaxAmount;
 
   res.json({
-    Federal: dollarUSLocale.format(federalTaxAmount.toFixed(2)),
-    FICA: dollarUSLocale.format(ficaTaxAmount.toFixed(2)),
-    State: dollarUSLocale.format(stateTaxAmount.toFixed(2)),
-    Total: dollarUSLocale.format(totalTaxAmount.toFixed(2)),
+    Federal: dollarUSLocale.format(federalTaxAmount),
+    FICA: dollarUSLocale.format(ficaTaxAmount),
+    State: dollarUSLocale.format(stateTaxAmount),
+    Total: dollarUSLocale.format(totalTaxAmount),
   });
 });
 
 /* FETCH POST loginSubmission*/
 router.post("/loginSubmission", async function (req, res) {
   const loginInfo = req.body;
-
+  console.log(loginInfo.username);
   //check if username exists
   try {
     // grabbing the data using username from MongoDB
     let record = await userLoginInfo.findOne({ userID: loginInfo.username });
 
     if (record.password === loginInfo.password) {
-      if (record.taxData) {
-        //Do something to calculate the taxes with the user submitted info
-      }
-      // HOW DO I ADD ADDITIONAL JSON PROPERTIES TO THIS PROMISE COMING FROM FINDONE() MONGOOSE
       res.json(record);
     } else {
       res.json({ error: "Password does not match our records" });
@@ -92,6 +96,19 @@ router.post("/loginSubmission", async function (req, res) {
   } catch (error) {
     res.json({ error: "User not found" });
   }
+});
+
+/* FETCH POST deleteUserIncome*/
+router.post("/deleteUserIncome", async function (req, res) {
+  console.log("USER DELETE INCOME SUBMISSION");
+  const userInfo = req.body;
+
+  // filter and update definitions
+  let filter = { userID: userInfo.userID };
+  let update = { $unset: { taxData: "" } };
+  await userLoginInfo.findOneAndUpdate(filter, update);
+
+  res.send();
 });
 
 //CREATE ROUTE FOR GET DATA (ACTUAL, BUDGET, INCOME)

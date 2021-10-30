@@ -1,4 +1,4 @@
-let ficaTax = (salary, marital) => {
+export default function ficaTax(salary, marital) {
   let taxAmount = 0;
 
   //social security tax
@@ -22,8 +22,6 @@ let ficaTax = (salary, marital) => {
       taxAmount += (salary - 250000) * 0.009;
     }
   }
-  
-  return taxAmount;
-};
 
-module.exports = ficaTax;
+  return taxAmount;
+}

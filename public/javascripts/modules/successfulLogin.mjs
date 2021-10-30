@@ -1,24 +1,66 @@
+// for tax calculations
+import federalTax from "./federalTax.mjs";
+import ficaTax from "./ficaTax.mjs";
+import stateTax from "./stateTax.mjs";
+let dollarUSLocale = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+});
+
+// for deleting user income data
+import deleteUserIncome from "./deleteUserIncome.mjs";
+
 export default function sucessfulLogin(loginData) {
   let loginContainerDiv = document.getElementById("loginContainerDiv"); //DIV HTML
+  let taxAmountDiv = document.getElementById("taxAmountDiv");
+
+  // if there is a userID upon successful login
   if (loginData.userID) {
     loginContainerDiv.innerHTML = "";
     loginContainerDiv.innerHTML = `Welcome back ${loginData.firstName} ${loginData.lastName}`;
+
     // change the HTML DIV ID from anonIncomeSubmission to userIncomeSubmission
     document
       .getElementById("anonIncomeSubmission")
       .setAttribute("id", "userIncomeSubmission");
 
-    let taxAmountDiv = document.getElementById("taxAmountDiv");
-
     // clear the current HTML and do DOM manipulation if there is taxData from Database
     taxAmountDiv.innerHTML = "";
     if (loginData.taxData) {
-      document.getElementById("incomeButton").innerHTML = "Update";
-      document.getElementById("salary").value = loginData.taxData.salary;
-      document.getElementById("state").value = loginData.taxData.state;
-      document.getElementById("marital").value = loginData.taxData.marital;
+      let salary = loginData.taxData.salary;
+      let state = loginData.taxData.state;
+      let marital = loginData.taxData.marital;
 
-      for (let [key, value] of Object.entries(loginData.taxData)) {
+      // change the drop down to the values from the database
+      document.getElementById("incomeButton").innerHTML = "Update";
+      document.getElementById("salary").value = salary;
+      document.getElementById("state").value = state;
+      document.getElementById("marital").value = marital;
+
+      //show the delete button
+      document.getElementById("deleteIncomeSpan").innerHTML =
+        "<button type='button' id='deleteIncomeButton'>Delete</button>";
+
+      // listen for delete click
+      document
+        .getElementById("deleteIncomeButton")
+        .addEventListener("click", deleteUserIncome);
+
+      // calculate the taxes from front end modules
+      let federalTaxAmount = federalTax(salary, marital);
+      let stateTaxAmount = ficaTax(salary, marital, state);
+      let ficaTaxAmount = stateTax(salary, marital);
+      let totalTaxAmount = federalTaxAmount + stateTaxAmount + ficaTaxAmount;
+
+      // create object to use in DOM manipulation
+      let taxAmounts = {
+        Federal: dollarUSLocale.format(federalTaxAmount),
+        FICA: dollarUSLocale.format(ficaTaxAmount),
+        State: dollarUSLocale.format(stateTaxAmount),
+        Total: dollarUSLocale.format(totalTaxAmount),
+      };
+      // render the DOM manipulation to show the taxes
+      for (let [key, value] of Object.entries(taxAmounts)) {
         let divTax = document.createElement("div");
         divTax.className = "col-4 tax";
 

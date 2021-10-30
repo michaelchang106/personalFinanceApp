@@ -1,4 +1,4 @@
-let stateTax = (salary, marital, state) => {
+export default function stateTax(salary, marital, state) {
   let taxAmount = 0;
   // single or MFS -- California
   if ((marital === "Single" || marital === "MFS") && state === "California") {
@@ -93,6 +93,4 @@ let stateTax = (salary, marital, state) => {
     return taxAmount;
   }
   return taxAmount;
-};
-
-module.exports = stateTax;
+}
