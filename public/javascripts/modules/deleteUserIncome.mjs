@@ -14,7 +14,7 @@ export default async function deleteUserIncome() {
     if (!res.ok) {
       throw new Error("Response not ok " + res.status);
     }
-    console.log("Deleted user taxData");
+    taxAmountDiv.innerHTML = "Deleted";
   } catch (error) {
     taxAmountDiv.innerHTML = error.message;
   }

@@ -8,7 +8,7 @@ let dollarUSLocale = new Intl.NumberFormat("en-US", {
 });
 
 // for deleting user income data
-import deleteUserIncome from "./deleteUserIncome.mjs";
+import showDeleteButton from "./showDeleteButton.mjs";
 
 export default function sucessfulLogin(loginData) {
   let loginContainerDiv = document.getElementById("loginContainerDiv"); //DIV HTML
@@ -37,14 +37,8 @@ export default function sucessfulLogin(loginData) {
       document.getElementById("state").value = state;
       document.getElementById("marital").value = marital;
 
-      //show the delete button
-      document.getElementById("deleteIncomeSpan").innerHTML =
-        "<button type='button' id='deleteIncomeButton'>Delete</button>";
 
-      // listen for delete click
-      document
-        .getElementById("deleteIncomeButton")
-        .addEventListener("click", deleteUserIncome);
+      showDeleteButton();
 
       // calculate the taxes from front end modules
       let federalTaxAmount = federalTax(salary, marital);

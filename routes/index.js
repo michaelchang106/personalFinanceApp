@@ -48,23 +48,23 @@ router.post("/anonIncomeSubmission", function (req, res) {
 /* FETCH POST userIncomeSubmission*/
 router.post("/userIncomeSubmission", async function (req, res) {
   console.log("USER POST INCOME SUBMISSION");
-  const userInfo = req.body;
+  const loginInfo = req.body;
 
   // filter and update definitions
-  let filter = { userID: userInfo.userID };
+  let filter = { userID: loginInfo.userID };
   let update = {
     taxData: {
-      salary: userInfo.salary,
-      state: userInfo.state,
-      marital: userInfo.marital,
+      salary: loginInfo.salary,
+      state: loginInfo.state,
+      marital: loginInfo.marital,
     },
   };
   //filter and update into database
   await userLoginInfo.findOneAndUpdate(filter, update);
 
-  const salary = userInfo.salary;
-  const state = userInfo.state;
-  const marital = userInfo.marital;
+  const salary = loginInfo.salary;
+  const state = loginInfo.state;
+  const marital = loginInfo.marital;
 
   const federalTaxAmount = federalTax(salary, marital);
   const ficaTaxAmount = ficaTax(salary, marital);
@@ -82,7 +82,7 @@ router.post("/userIncomeSubmission", async function (req, res) {
 /* FETCH POST loginSubmission*/
 router.post("/loginSubmission", async function (req, res) {
   const loginInfo = req.body;
-  console.log(loginInfo.username);
+
   //check if username exists
   try {
     // grabbing the data using username from MongoDB
@@ -101,10 +101,10 @@ router.post("/loginSubmission", async function (req, res) {
 /* FETCH POST deleteUserIncome*/
 router.post("/deleteUserIncome", async function (req, res) {
   console.log("USER DELETE INCOME SUBMISSION");
-  const userInfo = req.body;
+  const loginInfo = req.body;
 
   // filter and update definitions
-  let filter = { userID: userInfo.userID };
+  let filter = { userID: loginInfo.userID };
   let update = { $unset: { taxData: "" } };
   await userLoginInfo.findOneAndUpdate(filter, update);
 

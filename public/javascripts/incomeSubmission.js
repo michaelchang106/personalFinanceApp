@@ -3,6 +3,8 @@
 let incomeSubmission = document.getElementById("anonIncomeSubmission"); //anon first by default
 let taxAmountDiv = document.getElementById("taxAmountDiv");
 
+import showDeleteButton from "./modules/showDeleteButton.mjs";
+
 // listen for click on incomeSubmission button
 incomeSubmission.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -20,18 +22,18 @@ incomeSubmission.addEventListener("submit", async (event) => {
   // add the userID
   formDataJSONString += `,"userID":"${localStorage.getItem("userID")}"}`;
 
+  // needs to be in this scope for use later in DOM rendering
   let taxAmount;
 
+  //switch fetchAction between anon and user for routing
+  let fetchAction;
+  if (incomeSubmission.id === "anonIncomeSubmission") {
+    fetchAction = "/anonIncomeSubmission";
+  } else if (incomeSubmission.id === "userIncomeSubmission") {
+    fetchAction = "/userIncomeSubmission";
+  }
   try {
-    //switch fetchAction between anon and user for routing
-    let fetchAction;
-    if (incomeSubmission.id === "anonIncomeSubmission") {
-      fetchAction = "/anonIncomeSubmission";
-    } else if (incomeSubmission.id === "userIncomeSubmission") {
-      fetchAction = "/userIncomeSubmission";
-    }
-
-    // fetch post anon or user -- IncomeSubmission
+    // FETCH POST anon or user -- IncomeSubmission
     const res = await fetch(fetchAction, {
       method: "POST",
       headers: {
@@ -52,6 +54,10 @@ incomeSubmission.addEventListener("submit", async (event) => {
     taxAmountDiv.innerHTML = error.message;
   }
 
+  // if user then show delete button
+  if (fetchAction === "/userIncomeSubmission") {
+    showDeleteButton();
+  }
   // clear the current HTML and do DOM manipulation
   taxAmountDiv.innerHTML = "";
   for (let [key, value] of Object.entries(taxAmount)) {
