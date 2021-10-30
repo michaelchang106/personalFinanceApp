@@ -1,17 +1,9 @@
-// import successfulLogin.js require successfulLogin
-
-// checkLogin.js
-// check login
-// business logic to check if user name and password OK
-// if successful - grab {dataJSON} from Mongoose for User
-// successfulLogin.js({dataJSON})
-
-//incorrect login
-// don't render HTML
+import successfulLogin from "./modules/successfulLogin.mjs";
 
 let loginSubmission = document.getElementById("loginSubmission"); //FORM HTML
 let loginContainerDiv = document.getElementById("loginContainerDiv"); //DIV HTML
 
+let loginData;
 loginSubmission.addEventListener("submit", async (event) => {
   event.preventDefault();
 
@@ -21,8 +13,7 @@ loginSubmission.addEventListener("submit", async (event) => {
   const plainFormData = Object.fromEntries(formData.entries());
   const formDataJSONString = JSON.stringify(plainFormData);
 
-  let loginInfo;
-
+  // attempt to FETCH data from database
   try {
     const res = await fetch("/loginSubmission", {
       method: "POST",
@@ -36,25 +27,12 @@ loginSubmission.addEventListener("submit", async (event) => {
       throw new Error("Response not ok " + res.status);
     }
 
-    loginInfo = await res.json();
+    //THE JSON with the USERS DATA returned from database
+    loginData = await res.json();
   } catch (error) {
     loginContainerDiv.innerHTML = error.message;
   }
-  // IF USER IS LOGGED IN SUCCESSFULLY
-  if (loginInfo.userID) {
-    // clear the current HTML and do DOM manipulation
-    loginContainerDiv.innerHTML = "";
-    loginContainerDiv.innerHTML = `Welcome back ${loginInfo.firstName} ${loginInfo.lastName}`;
-    // RUN successfulLogin.js
-    // * this will change the FormSubmission from anonIncomeSubmission to userIncomeSubmission
-    //    * create a new route for user income submission ->
-    //    * Create a userID variable -> used to pull user info from collection (actual, budget, income)
-    // * add in the ability to add budget and actual stuff
 
-    // IF USER DID NOT LOGIN SUCCESFULLY
-  } else {
-    alert(loginInfo.error);
-  }
-  // RUN erroredLogin.js
-  // * does anything need to be done upon an errored login? -- i dont think so?
+  //run successfulLogin module
+  successfulLogin(loginData);
 });

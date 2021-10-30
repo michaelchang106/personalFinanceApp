@@ -17,44 +17,66 @@
           <h1>Welcome to Finance Tracker!</h1>
         </div>
         <div class="d-flex justify-content-center">
-        <form action="/signUp/create" method="POST">
-          <div>
-              <li>
-                <label for="firstName">First Name:</label>
-                <input type="text" name="firstName" required />
-              </li>
-              <li>
-                <label for="lastName">Last Name:</label>
-                <input type="text" name="lastName" required />
-              </li>
-              <li>
-                <label for="userID">User Name:</label>
-                <input type="text" name="userID" required />
-              </li>
-              <li>
-                <label for="email">Email Address:</label>
-                <input type="mail" name="email" required />
-              </li>
-              <li>
-                <label for="password">Password:</label>
-                <input type="password"  id="password" name="password" minlength="8" onkeyup="check()" required />
-              </li><li></li>
-                <label for="confirmPassword">Confirm Password:</label>
-                <input type="password" name="confirmPassword" minlength="8" id="confirmPassword" onkeyup="check()" required />
-              </li>
-            </ul>
-          </div>
-          <div class="row d-flex justify-content-center m-2">
-            <div class="row">
-              <button class="col-6" type="submit">Create Account</button>
-              <button class="col-6" type="reset">Clear Content</button>
+          <form action="/signUp/create" method="POST">
+            <div>
+              <ul>
+                <li>
+                  <label for="firstName">First Name:</label>
+                  <input type="text" name="firstName" required />
+                </li>
+                <li>
+                  <label for="lastName">Last Name:</label>
+                  <input type="text" name="lastName" required />
+                </li>
+                <li>
+                  <label for="userID">User Name:</label>
+                  <input type="text" name="userID" required />
+                </li>
+                <li>
+                  <label for="email">Email Address:</label>
+                  <input type="mail" name="email" required />
+                </li>
+                <li>
+                  <label for="password">Password:</label>
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    minlength="8"
+                    onkeyup="check()"
+                    required
+                  />
+                </li>
+                <li>
+                  <label for="confirmPassword">Confirm Password:</label>
+                  <input
+                    type="password"
+                    name="confirmPassword"
+                    minlength="8"
+                    id="confirmPassword"
+                    onkeyup="check()"
+                    required
+                  />
+                </li>
+              </ul>
             </div>
-            <div class="row d-flex justify-content-center" id="misMatchPassword"></div>
-          </div>
-        </form>
+            <div class="row d-flex justify-content-center m-2">
+              <div class="row">
+                <button class="col-6" type="submit">Create Account</button>
+                <button class="col-6" type="reset">Clear Content</button>
+              </div>
+              <div
+                class="row d-flex justify-content-center"
+                id="misMatchPassword"
+              ></div>
+            </div>
+          </form>
         </div>
       </div>
     </div>
-    <script type="text/javascript" src="../javascripts/confirmPassword.js"></script>
+    <script
+      type="text/javascript"
+      src="../javascripts/confirmPassword.js"
+    ></script>
   </body>
 </html>

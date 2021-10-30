@@ -1,12 +1,12 @@
 // https://simonplend.com/how-to-use-fetch-to-post-form-data-as-json-to-your-api/
 
-let anonIncomeSubmission = document.getElementById("anonIncomeSubmission");
+let incomeSubmission = document.getElementById("anonIncomeSubmission"); //anon first by default
 let taxAmountDiv = document.getElementById("taxAmountDiv");
 
-anonIncomeSubmission.addEventListener("submit", async (event) => {
+incomeSubmission.addEventListener("submit", async (event) => {
   event.preventDefault();
 
-  const formData = new FormData(anonIncomeSubmission);
+  const formData = new FormData(incomeSubmission);
 
   // convert FormData to JSON
   const plainFormData = Object.fromEntries(formData.entries());
@@ -15,7 +15,13 @@ anonIncomeSubmission.addEventListener("submit", async (event) => {
   let taxAmount;
 
   try {
-    const res = await fetch("/anonIncomeSubmission", {
+    let fetchAction;
+    if (incomeSubmission.id === "anonIncomeSubmission") {
+      fetchAction = "/anonIncomeSubmission";
+    } else if (incomeSubmission.id === "userIncomeSubmission") {
+      fetchAction = "/userIncomeSubmission";
+    }
+    const res = await fetch(fetchAction, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

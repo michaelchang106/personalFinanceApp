@@ -24,13 +24,14 @@
               <!-- Submit income data anonomyously-->
               <form id="anonIncomeSubmission" action="">
                 <input
+                  id="salary"
                   name="salary"
                   type="number"
                   min="0"
                   placeholder="Salary"
                   required
                 />
-                <select name="state" required>
+                <select id="state" name="state" required>
                   <option value="" disable selected hidden>
                     Select Domicile State
                   </option>
@@ -39,7 +40,7 @@
                   <option value="Texas">Texas</option>
                   <option value="Florida">Florida</option>
                 </select>
-                <select name="marital" required>
+                <select id="marital" name="marital" required>
                   <option value="" disable selected hidden>
                     Select Marital Status
                   </option>
@@ -95,7 +96,7 @@
     ></script>
 
     <!-- checkLogin.js-->
-    <script type="text/javascript" src="../javascripts/checkLogin.js"></script>
+    <script type="module" src="../javascripts/checkLogin.js"></script>
 
     <!-- Bootstrap -->
     <script
