@@ -62,13 +62,9 @@ incomeSubmission.addEventListener("submit", async (event) => {
   taxAmountDiv.innerHTML = "";
   for (let [key, value] of Object.entries(taxAmount)) {
     let divTax = document.createElement("div");
-    divTax.className = "col-4 tax";
+    divTax.className = "col-3 tax";
+    divTax.innerText = `${key} - ${value}`;
 
-    let divAmount = document.createElement("div");
-    divAmount.className = "amount";
-    divAmount.innerText = `${key} - ${value}`;
-
-    divTax.appendChild(divAmount);
     taxAmountDiv.appendChild(divTax);
   }
 });

@@ -17,7 +17,7 @@ export default function sucessfulLogin(loginData) {
   // if there is a userID upon successful login
   if (loginData.userID) {
     loginContainerDiv.innerHTML = "";
-    loginContainerDiv.innerHTML = `Welcome back ${loginData.firstName} ${loginData.lastName}`;
+    loginContainerDiv.innerHTML = `Welcome Back ${loginData.firstName} ${loginData.lastName}!`;
 
     // change the HTML DIV ID from anonIncomeSubmission to userIncomeSubmission
     document
@@ -37,7 +37,6 @@ export default function sucessfulLogin(loginData) {
       document.getElementById("state").value = state;
       document.getElementById("marital").value = marital;
 
-
       showDeleteButton();
 
       // calculate the taxes from front end modules
@@ -56,13 +55,9 @@ export default function sucessfulLogin(loginData) {
       // render the DOM manipulation to show the taxes
       for (let [key, value] of Object.entries(taxAmounts)) {
         let divTax = document.createElement("div");
-        divTax.className = "col-4 tax";
+        divTax.className = "col-3 tax";
+        divTax.innerText = `${key} - ${value}`;
 
-        let divAmount = document.createElement("div");
-        divAmount.className = "amount";
-        divAmount.innerText = `${key} - ${value}`;
-
-        divTax.appendChild(divAmount);
         taxAmountDiv.appendChild(divTax);
       }
     }

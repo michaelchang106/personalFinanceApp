@@ -1,8 +1,6 @@
 export default async function deleteUserIncome() {
   let taxAmountDiv = document.getElementById("taxAmountDiv");
   try {
-    console.log("Broadcasting post method /deleteuserIncome");
-    console.log(localStorage.getItem("userID"));
     const res = await fetch("/deleteUserIncome", {
       method: "POST",
       headers: {
