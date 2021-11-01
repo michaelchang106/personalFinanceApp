@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
-const UserLogin = require("../db-model/userSchema.js");
+const UserLogin = require("../database/userSchema.js");
 
 mongoose.connect("mongodb://localhost/UserLoginDB");
 
