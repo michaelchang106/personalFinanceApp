@@ -45,10 +45,11 @@ export default function sucessfulLogin(loginData) {
       renderTaxInformationHTML(taxAmounts);
 
       // create the add, delete, edit buttons
-      createBudgetSection();
-      createActualSection();
     }
   } else {
     alert(loginData.error);
   }
+
+  createBudgetSection();
+  createActualSection();
 }

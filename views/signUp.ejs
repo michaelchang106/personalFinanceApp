@@ -18,7 +18,7 @@
           <h1>Welcome to Finance Tracker!</h1>
         </div>
         <div class="d-flex justify-content-center">
-          <form action="/signUp/create" method="POST">
+          <form action="" id="registerForm">
             <div>
               <ul>
                 <li>
@@ -31,7 +31,7 @@
                 </li>
                 <li>
                   <label for="userID">User Name:</label>
-                  <input type="text" name="userID" required />
+                  <input type="text" id="userID"name="userID" required />
                 </li>
                 <li>
                   <label for="email">Email Address:</label>
@@ -42,6 +42,7 @@
                   <input
                     type="password"
                     id="password"
+                    class="password"
                     name="password"
                     minlength="3"
                     onkeyup="check()"
@@ -53,6 +54,7 @@
                   <input
                     type="password"
                     name="confirmPassword"
+                    class="password"
                     minlength="3"
                     id="confirmPassword"
                     onkeyup="check()"
@@ -70,6 +72,7 @@
                 class="row d-flex justify-content-center"
                 id="misMatchPassword"
               ></div>
+              <div id="passwordMismatch"></div>
               <div>
                 <a href="/">Go Back Home</a>
               </div>
@@ -82,5 +85,6 @@
       type="text/javascript"
       src="../javascripts/confirmPassword.js"
     ></script>
+    <script type="text/javascript" src="../javascripts/signupFrontend.js"></script>
   </body>
 </html>

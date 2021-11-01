@@ -63,11 +63,13 @@ router.post("/loginPost", async function (req, res) {
     // grabbing the data using username from MongoDB
     let record = await userLoginInfo.findOne({ userID: loginInfo.username });
 
-    if (record.password === loginInfo.password) {
-      res.json(record);
-    } else {
-      res.json({ error: "Password does not match our records" });
-    }
+    bcrypt.compare(loginInfo.password, record.password, (err, result) => {
+      if (result) {
+        res.json(record);
+      } else {
+        res.json({ error: "Password does not match our records" });
+      }
+    });
   } catch (error) {
     res.json({ error: "User not found" });
   }
