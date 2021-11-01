@@ -4,7 +4,7 @@ registerForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   //convert
   const formData = new FormData(registerForm);
-  console.log(formData)
+  console.log(formData);
   // convert FormData to JSON
   const plaidnFormData = Object.fromEntries(formData.entries()); //Iterates and converst each entry to a JSON
   const formDataJSON = JSON.stringify(plaidnFormData);

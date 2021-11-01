@@ -61,8 +61,7 @@ incomePost.addEventListener("submit", async (event) => {
   }
   // clear the current HTML
   taxAmountDiv.innerHTML = "";
-  
+
   // render the HTML with DOM manipulation
   renderTaxInformationHTML(taxAmount);
-  
 });

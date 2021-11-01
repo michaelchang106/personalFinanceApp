@@ -57,7 +57,7 @@ router.post("/userIncomePost", async function (req, res) {
 /* FETCH POST loginPost*/
 router.post("/loginPost", async function (req, res) {
   const loginInfo = req.body;
-  
+
   //check if username exists
   try {
     // grabbing the data using username from MongoDB
