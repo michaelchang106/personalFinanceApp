@@ -11,7 +11,6 @@ const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 const userLoginInfo = require("../database/userSchema.js");
 const actualBudgetSchema = require("../database/actualBudgetSchema.js");
-mongoose.connect("mongodb://localhost/UserLoginDB");
 
 /* GET home page. */
 router.get("/", function (req, res) {
@@ -48,9 +47,15 @@ router.post("/userIncomePost", async function (req, res) {
       marital: loginInfo.marital,
     },
   };
+
+  //connecet to database
+  await mongoose.connect("mongodb://localhost/UserLoginDB");
+
   //query and update into database
   await userLoginInfo.findOneAndUpdate(query, update);
 
+  // close database
+  await mongoose.connection.close();
   res.json(calculateTaxesBackEnd(salary, marital, state));
 });
 
@@ -60,6 +65,9 @@ router.post("/loginPost", async function (req, res) {
 
   //check if username exists
   try {
+    // connect to database
+    await mongoose.connect("mongodb://localhost/UserLoginDB");
+
     // grabbing the data using username from MongoDB
     let record = await userLoginInfo.findOne({ userID: loginInfo.username });
 
@@ -72,6 +80,9 @@ router.post("/loginPost", async function (req, res) {
     });
   } catch (error) {
     res.json({ error: "User not found" });
+  } finally {
+    // close database
+    await mongoose.connection.close();
   }
 });
 
@@ -80,11 +91,16 @@ router.post("/deleteUserIncome", async function (req, res) {
   console.log("USER DELETE INCOME -- POST");
   const loginInfo = req.body;
 
+  // connect to database
+  await mongoose.connect("mongodb://localhost/UserLoginDB");
+
   // query and update definitions
   let query = { userID: loginInfo.userID };
   let update = { $unset: { taxData: "" } };
   await userLoginInfo.findOneAndUpdate(query, update);
 
+  // close database
+  await mongoose.connection.close();
   res.send();
 });
 
@@ -105,14 +121,20 @@ router.post("/actualItemsPost", async function (req, res) {
       },
     },
   };
+
   const options = { new: true, upsert: true };
   try {
+    await mongoose.connect("mongodb://localhost/UserLoginDB");
     await actualBudgetSchema.findOneAndUpdate(query, update, options);
   } catch {
     res.status();
+  } finally {
+    await mongoose.connection.close();
   }
-
+  
+  await mongoose.connect("mongodb://localhost/UserLoginDB");
   let record = await actualBudgetSchema.findOne(query);
+  await mongoose.connection.close();
   res.json(record);
 });
 
@@ -125,35 +147,38 @@ router.post("/actualItemsGet", async function (req, res) {
   let record;
 
   try {
+    await mongoose.connect("mongodb://localhost/UserLoginDB");
+
     record = await actualBudgetSchema.findOne(query);
   } catch {
     res.status();
+  } finally {
+    await mongoose.connection.close();
   }
-
-  // TRYING TO SORT THE LIST OF ACTUAL ITEMS
-
-  // let actualItems = record.actualItems;
-  // console.log(actualItems);
-
-  // try {
-  //   console.log("TRYING TO SORT");
-  //   actualItems = actualItems.sort("-date").exec(function (err, docs) {
-  //     if (err) {
-  //       return err;
-  //     }
-  //     return docs;
-  //   });
-  // } catch (err) {
-  //   console.log("CAUGHT AN ERROR");
-  //   console.log(err);
-  //   err.stack;
-  // }
-
-  // console.log(typeof actualItems);
-  // console.log(actualItems);
 
   res.json(record);
 });
+// TRYING TO SORT THE LIST OF ACTUAL ITEMS
+
+// let actualItems = record.actualItems;
+// console.log(actualItems);
+
+// try {
+//   console.log("TRYING TO SORT");
+//   actualItems = actualItems.sort("-date").exec(function (err, docs) {
+//     if (err) {
+//       return err;
+//     }
+//     return docs;
+//   });
+// } catch (err) {
+//   console.log("CAUGHT AN ERROR");
+//   console.log(err);
+//   err.stack;
+// }
+
+// console.log(typeof actualItems);
+// console.log(actualItems);
 
 // CREATE BUDGET POST/GETS
 
