@@ -1,7 +1,6 @@
 let express = require("express");
 let router = express.Router();
 
-<<<<<<< HEAD
 // for calculating taxes
 const calculateTaxesBackEnd = require("../public/javascripts/incomeTax/backend/calculateTaxesBackEnd.js");
 
@@ -15,10 +14,8 @@ const actualBudgetSchema = require("../database/actualBudgetSchema.js");
 mongoose.connect("mongodb://localhost/UserLoginDB");
 
 /* GET home page. */
-=======
->>>>>>> 367fd6f49613c5aeb0e7af67adc8ab57e41e1b89
 router.get("/", function (req, res) {
-  res.send("Homepage");
+  res.render("index");
 });
 
 /* FETCH POST anonIncomePost*/
