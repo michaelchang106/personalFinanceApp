@@ -1,7 +1,7 @@
-export default async function deleteUserIncome() {
-  let taxAmountDiv = document.getElementById("taxAmountDiv");
+export default async function actualItemsGet() {
   try {
-    const res = await fetch("/deleteUserIncome", {
+    // FETCH POST actualItemsPost
+    const res = await fetch("/actualItemsGet", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -12,8 +12,12 @@ export default async function deleteUserIncome() {
     if (!res.ok) {
       throw new Error("Response not ok " + res.status);
     }
-    taxAmountDiv.innerHTML = "Deleted";
+
+    // assign actualItem the response json
+    return await res.json();
+
+    //catch error
   } catch (error) {
-    taxAmountDiv.innerHTML = error.message;
+    return error.message;
   }
 }

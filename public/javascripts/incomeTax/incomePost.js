@@ -1,16 +1,17 @@
 // https://simonplend.com/how-to-use-fetch-to-post-form-data-as-json-to-your-api/
 
-let incomeSubmission = document.getElementById("anonIncomeSubmission"); //anon first by default
+let incomePost = document.getElementById("anonIncomePost"); //anon first by default
 let taxAmountDiv = document.getElementById("taxAmountDiv");
 
-import showDeleteButton from "./modules/showDeleteButton.mjs";
+import showDeleteAndUpdateButton from "./showDeleteAndUpdateButton.mjs";
+import renderTaxInformationHTML from "./renderTaxInformationHTML.mjs";
 
-// listen for click on incomeSubmission button
-incomeSubmission.addEventListener("submit", async (event) => {
+// listen for click on incomePost button
+incomePost.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   // grab form data after click
-  const formData = new FormData(incomeSubmission);
+  const formData = new FormData(incomePost);
 
   // convert FormData to JSON
   const plainFormData = Object.fromEntries(formData.entries());
@@ -19,7 +20,7 @@ incomeSubmission.addEventListener("submit", async (event) => {
   // hacky way to add userID from localStorage to update in Database
   let oneLessThanLength = formDataJSONString.length - 1;
   formDataJSONString = formDataJSONString.slice(0, oneLessThanLength);
-  // add the userID
+  // hacky way to add the userID
   formDataJSONString += `,"userID":"${localStorage.getItem("userID")}"}`;
 
   // needs to be in this scope for use later in DOM rendering
@@ -27,13 +28,13 @@ incomeSubmission.addEventListener("submit", async (event) => {
 
   //switch fetchAction between anon and user for routing
   let fetchAction;
-  if (incomeSubmission.id === "anonIncomeSubmission") {
-    fetchAction = "/anonIncomeSubmission";
-  } else if (incomeSubmission.id === "userIncomeSubmission") {
-    fetchAction = "/userIncomeSubmission";
+  if (incomePost.id === "anonIncomePost") {
+    fetchAction = "/anonIncomePost";
+  } else if (incomePost.id === "userIncomePost") {
+    fetchAction = "/userIncomePost";
   }
   try {
-    // FETCH POST anon or user -- IncomeSubmission
+    // FETCH POST anon or user -- IncomePost
     const res = await fetch(fetchAction, {
       method: "POST",
       headers: {
@@ -55,16 +56,13 @@ incomeSubmission.addEventListener("submit", async (event) => {
   }
 
   // if user then show delete button
-  if (fetchAction === "/userIncomeSubmission") {
-    showDeleteButton();
+  if (fetchAction === "/userIncomePost") {
+    showDeleteAndUpdateButton();
   }
-  // clear the current HTML and do DOM manipulation
+  // clear the current HTML
   taxAmountDiv.innerHTML = "";
-  for (let [key, value] of Object.entries(taxAmount)) {
-    let divTax = document.createElement("div");
-    divTax.className = "col-3 tax";
-    divTax.innerText = `${key} - ${value}`;
-
-    taxAmountDiv.appendChild(divTax);
-  }
+  
+  // render the HTML with DOM manipulation
+  renderTaxInformationHTML(taxAmount);
+  
 });

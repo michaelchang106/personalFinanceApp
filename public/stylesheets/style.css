@@ -43,7 +43,7 @@ input[type="password"] {
 }
 
 #deleteIncomeButton {
-  background-color: #04aa6d;
+  background-color: red;
   color: white;
   padding: 14px 20px;
   margin: 8px 0;
@@ -56,6 +56,7 @@ button:hover {
   opacity: 0.8;
 }
 
+/*DONT NEED THIS BELOW CAN DELETE LATER*/
 /* Extra style for the cancel button (red) */
 .cancelbtn {
   width: auto;
@@ -75,8 +76,7 @@ img.avatar {
   border-radius: 50%;
 }
 
-/* Add padding to containers */
-.container {
+Add padding to containers .container {
   padding: 16px;
 }
 

@@ -1,13 +1,14 @@
-import successfulLogin from "./modules/successfulLogin.mjs";
+import successfulLogin from "./successfulLogin.mjs";
 
-let loginSubmission = document.getElementById("loginSubmission"); //FORM HTML
+let loginPost = document.getElementById("loginPost"); //FORM HTML
 let loginContainerDiv = document.getElementById("loginContainerDiv"); //DIV HTML
 
 let loginData;
-loginSubmission.addEventListener("submit", async (event) => {
+loginPost.addEventListener("submit", async (event) => {
   event.preventDefault();
 
-  const formData = new FormData(loginSubmission);
+  // grab FormData from HTML
+  const formData = new FormData(loginPost);
 
   // convert FormData to JSON
   const plainFormData = Object.fromEntries(formData.entries());
@@ -15,8 +16,7 @@ loginSubmission.addEventListener("submit", async (event) => {
 
   // attempt to FETCH data from database
   try {
-
-    const res = await fetch("/loginSubmission", {
+    const res = await fetch("/loginPost", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -42,4 +42,3 @@ loginSubmission.addEventListener("submit", async (event) => {
   //run successfulLogin module
   successfulLogin(loginData);
 });
-

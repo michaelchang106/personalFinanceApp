@@ -22,7 +22,7 @@
           <div class="col-8">
             <div class="incomeContainer">
               <!-- Submit income data-->
-              <form id="anonIncomeSubmission" action="">
+              <form id="anonIncomePost" action="">
                 <input
                   id="salary"
                   name="salary"
@@ -58,7 +58,7 @@
           <!-- col-8 end -->
           <div class="col-4">
             <div class="loginContainer" id="loginContainerDiv">
-              <form id="loginSubmission" action="">
+              <form id="loginPost" action="">
                 <label for="username"><b>Username</b></label>
                 <input
                   type="text"
@@ -84,15 +84,39 @@
             <!-- loginContainer end -->
           </div>
           <!-- col-4 end -->
+          <div class="actualVsBudgetContainer mt-3 mb-3">
+            <div class="row">
+              <div class="col-12 actualVsBudgetDiv mt-3 mb-3">
+                <h2>Budget and Actual Summary</h2>
+              </div>
+            </div>
+          </div>
+          <div id="budgetAndActualContainer">
+            <div class="row">
+              <div id="budgetContainer" class="col-sm-12 col-md-6">
+                <div class="row"><h3>Budget</h3></div>
+                <div id="budgetDiv">
+                  Please Create Account and Login to add items
+                </div>
+              </div>
+
+              <div id="actualContainer" class="col-sm-12 col-md-6">
+                <div class="row"><h3>Actual</h3></div>
+                <div id="actualDiv">
+                  Please Create account and Login to add items
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- incomeSubmission.js-->
-    <script type="module" src="../javascripts/incomeSubmission.js"></script>
+    <!-- incomePost.js-->
+    <script type="module" src="../javascripts/incomeTax/incomePost.js"></script>
 
     <!-- checkLogin.js-->
-    <script type="module" src="../javascripts/checkLogin.js"></script>
+    <script type="module" src="../javascripts/login/checkLogin.js"></script>
 
     <!-- Bootstrap -->
     <script
