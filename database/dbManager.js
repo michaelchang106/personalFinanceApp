@@ -1,23 +1,28 @@
 const mongodb = require("mongodb");
-const mongoose = require("mongoose");
 const MongoClient = mongodb.MongoClient;
-const userLoginInfo = require("./userSchema.js");
 
 // creat users info
 
 function dbManager() {
-  const db = {};
+  const database = {};
   const dbName = "UserLoginDB";
-  const url = "mongodb://localhost:27017";
+  const url = process.env.MONGO_URL || "mongodb://localhost:27017";
   const collectionName = "userlogindbs";
 
-  db.addUser = async (userInfo) => {
+  database.addUser = async (userInfo) => {
+    const client = await new MongoClient(url, { useUnifiedTopology: true });
     try {
-      let value = await db.searchUser({ userID: userInfo.userID });
-      await mongoose.connect("mongodb://localhost/UserLoginDB");
-      console.log("connected to mongoose:", value);
+      console.log("searching....");
+      let value = await database.searchUser({ userID: userInfo.userID }); // Check if user is in the db.
+      // Connect to MongoDB, db, and finally the collection
+      await client.connect();
+      console.log("connected to MongoDB");
+      const db = await client.db(dbName);
+      console.log("connected to database");
+      const collection = await db.collection(collectionName);
+
       if (value === null) {
-        await userLoginInfo.create(userInfo);
+        await collection.insertOne(userInfo);
         console.log(`user ${userInfo.userID} added to database`);
         return false;
       } else {
@@ -26,34 +31,15 @@ function dbManager() {
       }
     } finally {
       console.log("closing mongoose connection");
-      mongoose.connection.close();
+      await client.close();
       console.log("clossed");
     }
   };
 
-  // db.addUser = async (userInfo) => {
-  //   //Connect using mongoose b/c has restrictions.
-  //   db.searchUser({ userID: userInfo.userID }) //Check if a user exists.
-  //     .then((value) => {
-  //       if (value === null) {
-  //         mongoose.connect("mongodb://localhost/UserLoginDB").then((value) => {
-  //           console.log("mongoose connected ", value);
-  //           userLoginInfo.create(userInfo, async (err, userInfo) => {
-  //             if (err) throw err;
-  //             console.log("Following added to database: ", userInfo);
-  //           });
-  //         });
-  //       } else {
-  //         console.log("user name exist", value);
-  //       }
-  //     })
-  //     .finally(mongoose.connection.close()); //Close connection when done!
-  // };
-
-  db.searchUser = async (query) => {
+  database.searchUser = async (query) => {
     let client;
     try {
-      client = new MongoClient(url, { useUnifiedTopology: true }); //connect to mogoClient
+      client = new MongoClient(url, { useUnifiedTopology: true }); //connect to mongoClient using our url.
       console.log("Connecting to the db");
       await client.connect(); // establish a connection to the server
       console.log("Connected!");
@@ -66,11 +52,11 @@ function dbManager() {
       return users;
     } finally {
       console.log("Closing the connection");
-      client.close();
+      await client.close();
     }
   };
 
-  return db;
+  return database;
 }
 
 module.exports = dbManager();

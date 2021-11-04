@@ -6,7 +6,7 @@ registerForm.addEventListener("submit", async (event) => {
   const formData = new FormData(registerForm);
   console.log(formData);
   // convert FormData to JSON
-  const plaidnFormData = Object.fromEntries(formData.entries()); //Iterates and converst each entry to a JSON
+  const plaidnFormData = Object.fromEntries(formData.entries()); //Iterates and converts each entry to a JSON
   const formDataJSON = JSON.stringify(plaidnFormData);
 
   const res = await fetch("/signup/create", {

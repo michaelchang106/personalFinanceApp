@@ -10,8 +10,6 @@ router.get("/", function (req, res) {
 
 //Save user info.
 router.post("/create", async (req, res) => {
-  console.log("at create");
-
   await bcrypt.hash(req.body.password, 10, (err, hash) => {
     if (err) {
       throw err;
