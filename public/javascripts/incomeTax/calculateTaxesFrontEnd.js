@@ -1,18 +1,18 @@
 // for tax calculations
-import federalTax from "./federalTax.mjs";
-import ficaTax from "./ficaTax.mjs";
-import stateTax from "./stateTax.mjs";
-let dollarUSLocale = new Intl.NumberFormat("en-US", {
+import federalTax from "./modules/federalTax.js";
+import ficaTax from "./modules/ficaTax.js";
+import stateTax from "./modules/stateTax.js";
+const dollarUSLocale = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
 });
 
 export default function calculateTaxesFrontEnd(salary, marital, state) {
   // calculate the taxes from front end modules
-  let federalTaxAmount = federalTax(salary, marital);
-  let stateTaxAmount = ficaTax(salary, marital, state);
-  let ficaTaxAmount = stateTax(salary, marital);
-  let totalTaxAmount = federalTaxAmount + stateTaxAmount + ficaTaxAmount;
+  const federalTaxAmount = federalTax(salary, marital);
+  const stateTaxAmount = stateTax(salary, marital, state);
+  const ficaTaxAmount = ficaTax(salary, marital);
+  const totalTaxAmount = federalTaxAmount + stateTaxAmount + ficaTaxAmount;
 
   return {
     Federal: dollarUSLocale.format(federalTaxAmount),

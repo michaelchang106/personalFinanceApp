@@ -1,8 +1,8 @@
 let actualDiv = document.getElementById("actualDiv");
-import createActualItemsForm from "./createActualItemsForm.mjs";
-import actualItemsPost from "./actualItemsPost.mjs";
-import actualItemsGet from "./actualItemsGet.mjs";
-import createActualCards from "./createActualCards.mjs";
+import createActualItemsForm from "./modules/createActualItemsForm.js";
+import actualItemsPost from "./modules/actualItemsPost.js";
+import actualItemsGet from "./modules/actualItemsGet.js";
+import createActualCards from "./modules/createActualCards.js";
 
 export default async function createActualSection() {
   // clear the div

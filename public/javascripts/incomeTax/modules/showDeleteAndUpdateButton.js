@@ -1,5 +1,5 @@
 // for deleting user income data
-import deleteUserIncome from "./deleteUserIncome.mjs";
+import deleteUserIncome from "./deleteUserIncome.js";
 
 let incomeButton = document.getElementById("incomeButton");
 let deleteIncomeSpan = document.getElementById("deleteIncomeSpan");

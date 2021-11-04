@@ -1,13 +1,12 @@
+// imports
 // for tax calculations
 import calculateTaxesFrontEnd from "../incomeTax/calculateTaxesFrontEnd.js";
-
 // for deleting user income data
-import showDeleteAndUpdateButton from "../incomeTax/showDeleteAndUpdateButton.mjs";
-import renderTaxInformationHTML from "../incomeTax/renderTaxInformationHTML.mjs";
-
+import showDeleteAndUpdateButton from "../incomeTax/modules/showDeleteAndUpdateButton.js";
+import renderTaxInformationHTML from "../incomeTax/modules/renderTaxInformationHTML.js";
 // create actual and budget sections
-import createBudgetSection from "../budget/createBudgetSection.mjs";
-import createActualSection from "../actuals/createActualSection.mjs";
+import createBudgetSection from "../budget/createBudgetSection.js";
+import createActualSection from "../actuals/createActualSection.js";
 
 // for DOM rendering
 let loginContainerDiv = document.getElementById("loginContainerDiv"); //DIV HTML
@@ -19,10 +18,8 @@ export default function sucessfulLogin(loginData) {
     loginContainerDiv.innerHTML = "";
     loginContainerDiv.innerHTML = `Welcome Back ${loginData.firstName} ${loginData.lastName}!`;
 
-    // change the HTML DIV ID from anonIncomePost to userIncomePost
-    document
-      .getElementById("anonIncomePost")
-      .setAttribute("id", "userIncomePost");
+    // change the HTML DIV ID from incomePost to userIncomePost
+    document.getElementById("incomePost").setAttribute("id", "userIncomePost");
 
     // clear the current HTML and do DOM manipulation if there is taxData from Database
     taxAmountDiv.innerHTML = "";

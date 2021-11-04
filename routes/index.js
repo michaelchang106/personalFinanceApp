@@ -1,16 +1,13 @@
 let express = require("express");
 let router = express.Router();
 
-// for calculating taxes
-const calculateTaxesBackEnd = require("../public/javascripts/incomeTax/backend/calculateTaxesBackEnd.js");
-
 // for login encryption
 const bcrypt = require("bcrypt");
 
 // for database connection
 const mongoose = require("mongoose");
 const userLoginInfo = require("../database/userSchema.js");
-const actualBudgetSchema = require("../database/actualBudgetSchema.js");
+const actualBudgetSchema = require("../database/actualBudgetIncomeSchema.js");
 
 /* GET home page. */
 router.get("/", function (req, res) {
@@ -18,15 +15,9 @@ router.get("/", function (req, res) {
 });
 
 /* FETCH POST anonIncomePost*/
-router.post("/anonIncomePost", function (req, res) {
+router.post("/incomePost", function (req, res) {
   console.log("ANONOMYOUS POST INCOME -- POST");
-  const anonInfo = req.body;
-
-  const salary = anonInfo.salary;
-  const state = anonInfo.state;
-  const marital = anonInfo.marital;
-
-  res.json(calculateTaxesBackEnd(salary, marital, state));
+  res.status(200).send();
 });
 
 /* FETCH POST userIncomePost*/
@@ -48,7 +39,7 @@ router.post("/userIncomePost", async function (req, res) {
     },
   };
 
-  //connecet to database
+  //connect to database
   await mongoose.connect("mongodb://localhost/UserLoginDB");
 
   //query and update into database
@@ -56,7 +47,7 @@ router.post("/userIncomePost", async function (req, res) {
 
   // close database
   await mongoose.connection.close();
-  res.json(calculateTaxesBackEnd(salary, marital, state));
+  res.json(salary, marital, state);
 });
 
 /* FETCH POST loginPost*/
@@ -131,7 +122,7 @@ router.post("/actualItemsPost", async function (req, res) {
   } finally {
     await mongoose.connection.close();
   }
-  
+
   await mongoose.connect("mongodb://localhost/UserLoginDB");
   let record = await actualBudgetSchema.findOne(query);
   await mongoose.connection.close();
