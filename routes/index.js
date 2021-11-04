@@ -8,6 +8,7 @@ const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 const userLoginInfo = require("../database/userSchema.js");
 const actualBudgetData = require("../database/actualBudgetSchema.js");
+const dbManager = require("../database/dbManager.js");
 
 // -----------------------FOR FILE UPLOAD - WORK IN PROGRESS -------------------
 // const multer = require("multer");
@@ -208,6 +209,14 @@ router.post("/actualItemsGet", async function (req, res) {
   }
 
   res.json(record);
+});
+
+// ----------BUDGET CARD ITEM ROUTES------------
+
+// Budget Item Post
+router.post("/budgetItem/post", (req, res) => {
+  console.log("BUDGET ITEM CARD -- POST");
+  dbManager.addBudgetItem(req.body);
 });
 
 // TRYING TO SORT THE LIST OF ACTUAL ITEMS
