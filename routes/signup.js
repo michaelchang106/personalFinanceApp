@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
-// <<<<<<< HEAD
 const dbManager = require("../database/dbManager.js");
 
+// tried converting to regular HTML and NOT EJS .... actually not sure what to put here....
 router.get("/", function (req, res) {
-  res.render("signUp");
+  res.sendFile("signup.html");
 });
 
 //Save user info.

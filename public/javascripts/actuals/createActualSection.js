@@ -39,11 +39,15 @@ export default async function createActualSection() {
   actualItemsForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     // grab form data after click
+    console.log("HERE");
     const formData = new FormData(actualItemsForm);
 
     // convert FormData to JSON
     const plainFormData = Object.fromEntries(formData.entries());
     let formDataJSONString = JSON.stringify(plainFormData);
+
+    console.log(plainFormData);
+    console.log(formDataJSONString);
 
     // hacky way to add userID from localStorage to update in Database
     let oneLessThanLength = formDataJSONString.length - 1;

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const userActualBudgetIncomeData = new Schema({
+const actualBudgetData = new Schema({
   userID: { type: String, required: true },
   actualItems: {
     vendor: { type: String, required: true },
@@ -21,22 +21,15 @@ const userActualBudgetIncomeData = new Schema({
       ],
       required: true,
     },
+    fileUpload: {type: String }
   },
   budgetItems: { type: Object },
-  incomeDate: {
-    salary: { type: Number, required: true },
-    state: {
-      type: String,
-      enum: ["California", "New York", "Texas", "Florida"],
-      required: true,
-    },
-    marital: { type: String, enum: ["Single", "MFS", "MFJ"], required: true },
-  },
+  
 });
 
 const model = mongoose.model(
-  "userActualBudgetIncomeData",
-  userActualBudgetIncomeData
+  "actualBudgetData",
+  actualBudgetData
 );
 
 module.exports = model;

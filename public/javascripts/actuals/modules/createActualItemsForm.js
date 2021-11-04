@@ -1,8 +1,8 @@
 export default function createActualItemsForm(actualFormPostDiv) {
-  actualFormPostDiv.innerHTML = `<form id='actualItemsForm' action=''>
-      <input type='text' name='vendor' placeholder='Vendor' required>
-      <input type='date' name='date' required>
-      <input type='number' name='amount' placeholder='Amount' min='0' step='0.01' required>
+  actualFormPostDiv.innerHTML = `<form id="actualItemsForm" action="">
+      <input type="text" name="vendor" placeholder="Vendor" required>
+      <input type="text" name="date" placeholder="MM/DD/YYYY" required>
+      <input type="number" name="amount" placeholder="Amount" min="0" step="0.01" required>
       <select id="category" name="category" required>
                   <option value="" disable selected hidden>
                     Select a category

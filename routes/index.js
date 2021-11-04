@@ -7,14 +7,71 @@ const bcrypt = require("bcrypt");
 // for database connection
 const mongoose = require("mongoose");
 const userLoginInfo = require("../database/userSchema.js");
-const actualBudgetSchema = require("../database/actualBudgetIncomeSchema.js");
+const actualBudgetData = require("../database/actualBudgetSchema.js");
+
+// -----------------------FOR FILE UPLOAD - WORK IN PROGRESS -------------------
+// const multer = require("multer");
+// const upload = multer({dest: "uploads/"});
+
+// //UPLOAD A FILE POST GUIDE
+// router.post(
+//   "/uploadFile",
+//   upload.single("receiptImage"),
+//   async function (req, res) {
+//     console.log(req.file);
+//     try {
+//       await mongoose.connect("mongodb://localhost/UserLoginDB");
+//     } catch {
+//       res.status();
+//     } finally {
+//       await mongoose.connection.close();
+//     }
+
+//     res.send();
+//   }
+// );
+
+// for storage on server, but storing on mongoDB
+// const storage = multer.diskStorage({
+//   destination: (req, file, callback) => {
+//     callback(null, "./uploads/");
+//   },
+//   filename: (req, file, callback) => {
+//     callback(null, new Date().toISOString() + file.originalname);
+//   },
+// });
+
+// const fileFilter = (req, file, callback) => {
+//   //reject a file
+//   if (
+//     file.mimetype === "image/jpeg" ||
+//     file.mimetype === "image/png" ||
+//     file.mimetype === "image/svg" ||
+//     file.mimetype === "image/webp" ||
+//     file.mimetype === "application/pdf"
+//   ) {
+//     callback(null, true);
+//   } else {
+//     callback(new Error("jpeg, png, svg, webp, pdf only"), false);
+//   }
+// };
+
+// const upload = multer({
+//   limits: { fileSize: 1024 * 1024 * 10 },
+//   storage: storage,
+//   fileFilter: fileFilter,
+// });
+
+// ------------------------------ROUTES-----------------------------------
 
 /* GET home page. */
 router.get("/", function (req, res) {
-  res.render("index");
+  res.sendFile("index.html");
 });
 
-/* FETCH POST anonIncomePost*/
+// ----------INCOME ROUTES------------
+
+/* FETCH POST incomePost*/
 router.post("/incomePost", function (req, res) {
   console.log("ANONOMYOUS POST INCOME -- POST");
   res.status(200).send();
@@ -50,6 +107,25 @@ router.post("/userIncomePost", async function (req, res) {
   res.json(salary, marital, state);
 });
 
+/* FETCH POST deleteUserIncome*/
+router.post("/deleteUserIncome", async function (req, res) {
+  console.log("USER DELETE INCOME -- POST");
+  const loginInfo = req.body;
+
+  // connect to database
+  await mongoose.connect("mongodb://localhost/UserLoginDB");
+
+  // query and update definitions
+  let query = { userID: loginInfo.userID };
+  let update = { $unset: { taxData: "" } };
+  await userLoginInfo.findOneAndUpdate(query, update);
+
+  // close database
+  await mongoose.connection.close();
+  res.send();
+});
+
+// ----------LOGIN ROUTES------------
 /* FETCH POST loginPost*/
 router.post("/loginPost", async function (req, res) {
   const loginInfo = req.body;
@@ -77,23 +153,7 @@ router.post("/loginPost", async function (req, res) {
   }
 });
 
-/* FETCH POST deleteUserIncome*/
-router.post("/deleteUserIncome", async function (req, res) {
-  console.log("USER DELETE INCOME -- POST");
-  const loginInfo = req.body;
-
-  // connect to database
-  await mongoose.connect("mongodb://localhost/UserLoginDB");
-
-  // query and update definitions
-  let query = { userID: loginInfo.userID };
-  let update = { $unset: { taxData: "" } };
-  await userLoginInfo.findOneAndUpdate(query, update);
-
-  // close database
-  await mongoose.connection.close();
-  res.send();
-});
+// ----------ACTUAL CARD ITEM ROUTES------------
 
 /* FETCH POST actualItemsPost*/
 router.post("/actualItemsPost", async function (req, res) {
@@ -116,7 +176,7 @@ router.post("/actualItemsPost", async function (req, res) {
   const options = { new: true, upsert: true };
   try {
     await mongoose.connect("mongodb://localhost/UserLoginDB");
-    await actualBudgetSchema.findOneAndUpdate(query, update, options);
+    await actualBudgetData.findOneAndUpdate(query, update, options);
   } catch {
     res.status();
   } finally {
@@ -124,7 +184,7 @@ router.post("/actualItemsPost", async function (req, res) {
   }
 
   await mongoose.connect("mongodb://localhost/UserLoginDB");
-  let record = await actualBudgetSchema.findOne(query);
+  let record = await actualBudgetData.findOne(query);
   await mongoose.connection.close();
   res.json(record);
 });
@@ -140,7 +200,7 @@ router.post("/actualItemsGet", async function (req, res) {
   try {
     await mongoose.connect("mongodb://localhost/UserLoginDB");
 
-    record = await actualBudgetSchema.findOne(query);
+    record = await actualBudgetData.findOne(query);
   } catch {
     res.status();
   } finally {
@@ -149,6 +209,7 @@ router.post("/actualItemsGet", async function (req, res) {
 
   res.json(record);
 });
+
 // TRYING TO SORT THE LIST OF ACTUAL ITEMS
 
 // let actualItems = record.actualItems;
@@ -170,7 +231,5 @@ router.post("/actualItemsGet", async function (req, res) {
 
 // console.log(typeof actualItems);
 // console.log(actualItems);
-
-// CREATE BUDGET POST/GETS
 
 module.exports = router;
