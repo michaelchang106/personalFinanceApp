@@ -128,26 +128,4 @@ router.post("/budgetItem/post", (req, res) => {
   dbManager.addBudgetItem(req.body);
 });
 
-// TRYING TO SORT THE LIST OF ACTUAL ITEMS
-
-// let actualItems = record.actualItems;
-// console.log(actualItems);
-
-// try {
-//   console.log("TRYING TO SORT");
-//   actualItems = actualItems.sort("-date").exec(function (err, docs) {
-//     if (err) {
-//       return err;
-//     }
-//     return docs;
-//   });
-// } catch (err) {
-//   console.log("CAUGHT AN ERROR");
-//   console.log(err);
-//   err.stack;
-// }
-
-// console.log(typeof actualItems);
-// console.log(actualItems);
-
 module.exports = router;
