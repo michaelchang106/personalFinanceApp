@@ -20,12 +20,12 @@ export default function sucessfulLogin(loginData) {
     // change the HTML DIV ID from incomePost to userIncomePost
     document.getElementById("incomePost").setAttribute("id", "userIncomePost");
 
-    // clear the current HTML and do DOM manipulation if there is taxData from Database
+    // clear the current HTML and do DOM manipulation if there is incomeData from Database
     taxAmountDiv.innerHTML = "";
-    if (loginData.taxData) {
-      let salary = loginData.taxData.salary;
-      let state = loginData.taxData.state;
-      let marital = loginData.taxData.marital;
+    if (loginData.incomeData) {
+      let salary = loginData.incomeData.salary;
+      let state = loginData.incomeData.state;
+      let marital = loginData.incomeData.marital;
 
       // change the drop down to the values from the database
       document.getElementById("salary").value = salary;

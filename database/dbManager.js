@@ -66,19 +66,24 @@ function dbManager() {
       const collection = await db.collection(collectionUser);
 
       // query and update definitions
-      let query = { userID: loginInfo.userID };
-      let update = {
-        incomeData: {
-          salary: loginInfo.salary,
-          state: loginInfo.state,
-          marital: loginInfo.marital,
+      const query = { userID: loginInfo.userID };
+      const update = {
+        $set: {
+          incomeData: {
+            salary: loginInfo.salary,
+            state: loginInfo.state,
+            marital: loginInfo.marital,
+          },
         },
       };
+      const options = { upsert: true };
 
       //query and update into database
-      await collection.findOneAndUpdate(query, update);
+      await collection.findOneAndUpdate(query, update, options);
 
       console.log("Udpated Income Info!");
+    } catch (error) {
+      console.log("ERROR", error);
     } finally {
       await client.close();
       console.log("Closing the connection");
@@ -100,6 +105,8 @@ function dbManager() {
       await collection.findOneAndUpdate(query, update);
 
       console.log("Deleted Income Info!");
+    } catch (error) {
+      console.log("ERROR", error);
     } finally {
       await client.close();
       console.log("Closing the connection");
@@ -120,6 +127,8 @@ function dbManager() {
 
       //query into database
       return await collection.findOne(query);
+    } catch (error) {
+      console.log("ERROR", error);
     } finally {
       console.log("Got the user's info from DB!!");
       await client.close();
@@ -151,8 +160,10 @@ function dbManager() {
       const options = { returnNewDocument: true, upsert: true };
 
       //query and update into database
-      return await collection.findOneAndUpdate(query, update, options); // this returns something weird
-      // return await collection.findOne(query);
+      await collection.findOneAndUpdate(query, update, options); // this returns something weird
+      return await collection.findOne(query);
+    } catch (error) {
+      console.log("ERROR", error);
     } finally {
       console.log("Added the user's Actual Item!!");
       await client.close();
@@ -173,6 +184,8 @@ function dbManager() {
 
       //query and update into database
       return await collection.findOne(query);
+    } catch (error) {
+      console.log("ERROR", error);
     } finally {
       console.log("Got user's the Actual Items!!");
       await client.close();
