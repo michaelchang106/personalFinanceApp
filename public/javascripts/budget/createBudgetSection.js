@@ -1,37 +1,68 @@
 import createBudgetForm from "./modules/createBudgetForm.js";
 let budgetDiv = document.getElementById("budgetDiv");
 
-export default function createBudgetSection() {
+export default async function createBudgetSection() {
   // create the budget div
-
-  //Crete a budget Form
   let budgetFormDiv = document.createElement("div");
   budgetFormDiv.id = "budgetFormDiv";
 
+  //Create a budgetForm and childAppend to budgetFormDiv
   createBudgetForm(budgetFormDiv);
 
-  // let budgetButtonsDiv = document.createElement("div");
-  // budgetButtonsDiv.className = "budgetButtonsDiv";
-
-  // // clear the div and add the buttons
   budgetDiv.innerHTML = "";
   budgetDiv.appendChild(budgetFormDiv);
 
-  // addBudgetButton.addEventListener("click", addBudgetItemCard());
+  let budgetItemCards = document.createElement("div");
+  budgetItemCards.className = "row";
+  budgetFormDiv.appendChild(budgetItemCards);
 
-  // create the div for the budget cards/items
-  let rowBudgetCardsDiv = document.createElement("div");
+  //Load previously stored data.
 
-  rowBudgetCardsDiv.className = "row";
-  rowBudgetCardsDiv.id = "budgetCardsDiv";
+  const storedBudgetData = await loadBudgetData();
+  let index = 0;
+  if (storedBudgetData) {
+    for (let item of storedBudgetData) {
+      //Create for to delete budget
+      index = createBudgetCard(item, budgetItemCards, index);
+    }
+  }
 
-  // create div for the budget item cards
-  budgetDiv.appendChild(rowBudgetCardsDiv);
-
+  // Submit data to database
   let budgetForm = document.getElementById("budgetItemsForm");
+  index = await submitBudgetToDB(budgetForm, budgetItemCards, index);
+}
 
+//--------------------Load User Data------------------------------
+async function loadBudgetData() {
+  console.log("Fetch POST LOAD");
+  try {
+    // FETCH POST actualItemsPost
+    const res = await fetch("/budgetItem/loadBudget", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: `{"userID":"${localStorage.getItem("userID")}"}`,
+    });
+    if (!res.ok) {
+      throw new Error("Response not ok " + res.status);
+    }
+
+    // assign actualItem the response json
+    return await res.json();
+
+    //catch error
+  } catch (error) {
+    return error.message;
+  }
+}
+
+//--------------------Submit New Data and Display------------------
+
+// Helper add budget to submite for to mongoDB.
+async function submitBudgetToDB(budgetForm, parentDiv, index) {
   // Create new form data from user input.
-
   budgetForm.addEventListener("submit", async (event) => {
     event.preventDefault(); //stops event from routing to a new pages
 
@@ -51,6 +82,63 @@ export default function createBudgetSection() {
       body: formDataJSON, // body data type must match "Content-Type" header
     });
 
-    console.log(res);
+    const budgetJSON = await res.json();
+
+    return createBudgetCard(
+      budgetJSON[budgetJSON.length - 1],
+      parentDiv,
+      index
+    );
   });
+}
+
+// Add a budget
+function createBudgetCard(budgetForm, parentDiv, index) {
+  //Create a form
+  const formElement = document.createElement("form");
+  formElement.id = `formDelete${index}`;
+  index += 1;
+  const deleteBtn = document.createElement("button");
+  deleteBtn.type = "submit";
+  deleteBtn.innerHTML = "Delete";
+  //Format for size
+  const cardDiv = document.createElement("div");
+  cardDiv.className = "card col-4 mt-3";
+  parentDiv.appendChild(cardDiv);
+  cardDiv.appendChild(formElement);
+
+  for (let [key, value] of Object.entries(budgetForm)) {
+    const valueDiv = createCardDiv(key, value);
+    formElement.appendChild(valueDiv);
+    formElement.appendChild(deleteBtn);
+  }
+
+  return index;
+}
+
+// // This will add each item of a budget to the card
+function createCardDiv(key, value) {
+  const dollarUSLocale = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
+
+  function toTitleCase(str) {
+    return str.replace(/\w\S*/g, function (txt) {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+  }
+
+  key = toTitleCase(key);
+
+  if (key === "Date") {
+    let tempDate = new Date(value);
+    value = tempDate.toLocaleDateString("en-US");
+  } else if (key === "Amount") {
+    value = dollarUSLocale.format(value);
+  }
+
+  const budgetDiv = document.createElement("div");
+  budgetDiv.innerHTML = `${key} - ${value}`;
+  return budgetDiv;
 }
