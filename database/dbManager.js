@@ -183,11 +183,12 @@ function dbManager() {
 
       //query and update into database
       await collection.findOneAndUpdate(query, update, options); // this returns something weird
-      return await collection.findOne(query);
+      const itemInfo = await collection.findOne(query);
+      console.log("Added the user's Actual Item!!");
+      return itemInfo;
     } catch (error) {
       console.log("ERROR", error);
     } finally {
-      console.log("Added the user's Actual Item!!");
       await client.close();
       console.log("Closing the connection");
     }
@@ -208,11 +209,12 @@ function dbManager() {
       const query = { userID: user.userID };
 
       //query and update into database
-      return await collection.findOne(query);
+      const itemInfo = await collection.findOne(query);
+      console.log("Got user's the Actual Items!!");
+      return itemInfo;
     } catch (error) {
       console.log("ERROR", error);
     } finally {
-      console.log("Got user's the Actual Items!!");
       await client.close();
       console.log("Closing the connection");
     }
@@ -234,7 +236,7 @@ function dbManager() {
 
       //query into database
       let result = await collection.findOne(query);
-      // convert to typeof list of actualItems
+      // change result = to list of actualItems
       result = result.actualItems;
       //delete the item in index
       result.splice(userAndItem.index, 1);
@@ -249,11 +251,62 @@ function dbManager() {
 
       //query and update into database
       await collection.findOneAndUpdate(query, update, options); // this returns something weird
-      return await collection.findOne(query);
+      const itemInfo = await collection.findOne(query);
+      console.log("Deleted the user's actual item!");
+      return itemInfo;
     } catch (error) {
       console.log("ERROR", error);
     } finally {
+      await client.close();
+      console.log("Closing the connection");
+    }
+  };
+
+  database.editActualItem = async (actualItemToEdit) => {
+    let client = await new MongoClient(url, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    try {
+      await client.connect(); // establish a connection to the server
+      console.log("Connected!");
+      const db = client.db(dbName);
+      const collection = await db.collection(collectionBudgetActual);
+
+      // query definitions
+      const query = { userID: actualItemToEdit.userID };
+
+      //query into database
+      let result = await collection.findOne(query);
+      // change result = to list of actualItems
+      result = result.actualItems.sort(
+        (a, b) => Date.parse(a.date) - Date.parse(b.date)
+      );
+
+      result[actualItemToEdit.index] = {
+        vendor: actualItemToEdit.vendor,
+        date: actualItemToEdit.date,
+        amount: actualItemToEdit.amount,
+        category: actualItemToEdit.category,
+      };
+
+      // update, options definitions
+      const update = {
+        $set: {
+          actualItems: result,
+        },
+      };
+      const options = { returnNewDocument: true, upsert: true };
+
+      //query and update into database
+      await collection.findOneAndUpdate(query, update, options); // this returns something weird
+      const updatedItem = await collection.findOne(query);
+
       console.log("Got user's the Actual Items!!");
+      return updatedItem;
+    } catch (error) {
+      console.log("ERROR", error);
+    } finally {
       await client.close();
       console.log("Closing the connection");
     }

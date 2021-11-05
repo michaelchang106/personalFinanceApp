@@ -12,9 +12,9 @@ form {
   border: 3px solid #f1f1f1;
 }
 
-/* Full-width inputs */
-input[type="text"],
-input[type="password"] {
+/* Full-width inputs NEED TO EDIT THIS AS IT IS EFFECTING ALL FORMS*/
+#loginContainerDiv input[type="text"],
+#loginContainerDiv input[type="password"] {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
@@ -58,7 +58,6 @@ input[type="password"] {
   background-color: slategray;
   padding: 7px 10px;
   margin: 8px 0;
-  text-align: center;
 }
 
 /* --------SECTIONS ----------*/

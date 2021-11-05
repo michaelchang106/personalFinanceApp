@@ -119,6 +119,20 @@ router.post("/actualItemDelete", async function (req, res) {
   }
 });
 
+/* FETCH POST actualItemEdit*/
+router.post("/actualItemEdit", async function (req, res) {
+  console.log("ACTUAL ITEM EDIT -- POST");
+  const actualItem = req.body;
+
+  try {
+    let record = await dbManager.editActualItem(actualItem);
+    res.json(record);
+  } catch (error) {
+    console.log("Caught an error!", error);
+    res.send(error);
+  }
+});
+
 // ----------BUDGET CARD ITEM ROUTES------------
 
 // Budget Item Post

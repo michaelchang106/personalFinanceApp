@@ -57,7 +57,7 @@ incomePost.addEventListener("submit", async (event) => {
       }
       //catch error
     } catch (error) {
-      taxAmountDiv.innerHTML = error.message;
+      throw new Error("Error sending POST to add user income", error);
     }
 
     // if user is logged in then show delete button

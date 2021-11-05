@@ -1,13 +1,13 @@
-export default async function actualItemsGet() {
+export default async function actualItemEdit(formDataJSONString) {
   try {
-    // FETCH POST actualItemsPost
-    const res = await fetch("/actualItemsGet", {
+    // FETCH POST actualItemEdit
+    const res = await fetch("/actualItemEdit", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
       },
-      body: `{"userID":"${localStorage.getItem("userID")}"}`,
+      body: formDataJSONString,
     });
     if (!res.ok) {
       throw new Error("Response not ok " + res.status);
@@ -18,6 +18,7 @@ export default async function actualItemsGet() {
 
     //catch error
   } catch (error) {
-    throw new Error("Error sending POST to get actual items", error);
+    throw new Error("Error sending POST to edit actual item", error);
   }
 }
+

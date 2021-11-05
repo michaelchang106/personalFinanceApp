@@ -25,6 +25,6 @@ export default async function deleteUserIncome() {
     // remove the delete button
     deleteIncomeSpan.innerHTML = "";
   } catch (error) {
-    taxAmountDiv.innerHTML = error.message;
+    throw new Error("Error sending POST to delete user income", error);
   }
 }

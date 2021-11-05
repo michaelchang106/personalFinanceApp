@@ -1,10 +1,13 @@
 import actualItemDelete from "./actualItemDelete.js";
+import editActualCard from "./editActualCard.js";
 
+// FOR USD CURRENCY STRING CONVERSION
 const dollarUSLocale = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
 });
 
+// FOR STRING TITLE CASE CONVERSION
 function toTitleCase(str) {
   return str.replace(/\w\S*/g, function (txt) {
     return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
@@ -15,10 +18,13 @@ export default function createActualCards(listOfActualItems) {
   const actualItemCardsDiv = document.getElementById("actualItemCardsDiv");
   actualItemCardsDiv.innerHTML = "";
 
+  // LOOP THRU LIST OF ACTUAL ITEMS AND CREATE DIVS FOR THEM (OUTER FOR LOOP)
   for (let [itemIndex, item] of listOfActualItems.entries()) {
     const actualItemCards = document.createElement("div");
     actualItemCards.className = "card col-4";
     actualItemCards.id = `actualItemCard${itemIndex}`;
+
+    // LOOP THRU THE ITEM DETAILS AND RENDER THEM (INNER FOR LOOP)
     for (let [key, value] of Object.entries(item)) {
       key = toTitleCase(key);
       if (key === "Date") {
@@ -32,18 +38,19 @@ export default function createActualCards(listOfActualItems) {
       const actualItemDetailsDiv = document.createElement("div");
       actualItemDetailsDiv.innerHTML = `${key} - ${value}`;
       actualItemCards.appendChild(actualItemDetailsDiv);
-    }
+    } // ------------------(INNER FOR LOOP END)
+
     // append the card to the div
     actualItemCardsDiv.appendChild(actualItemCards);
 
     // create div and insert delete buttons
-    const actualDeleteDiv = document.createElement("div");
-    actualItemCards.appendChild(actualDeleteDiv);
+    const actualEditDeleteDiv = document.createElement("div");
+    actualItemCards.appendChild(actualEditDeleteDiv);
 
     // create the delete buttons by itemIndex number
     const deleteButton = document.createElement("span");
     deleteButton.innerHTML = `<button type='button' id='actualItemDeleteButton${itemIndex}'>Delete</button>`;
-    actualDeleteDiv.appendChild(deleteButton);
+    actualEditDeleteDiv.appendChild(deleteButton);
 
     // add listeners for delete button by itemIndex number (module for FETCH)
     document
@@ -51,5 +58,20 @@ export default function createActualCards(listOfActualItems) {
       .addEventListener("click", () => {
         actualItemDelete(itemIndex);
       });
-  }
+
+    // create div and insert Edit buttons
+    actualItemCards.appendChild(actualEditDeleteDiv);
+
+    // create the Edit buttons by itemIndex number
+    const EditButton = document.createElement("span");
+    EditButton.innerHTML = `<button type='button' id='actualItemEditButton${itemIndex}'>Edit</button>`;
+    actualEditDeleteDiv.appendChild(EditButton);
+
+    // add listeners for Edit button by itemIndex number (module for FETCH)
+    document
+      .getElementById(`actualItemEditButton${itemIndex}`)
+      .addEventListener("click", () => {
+        editActualCard(itemIndex);
+      });
+  } //--------------------(OUTER FOR LOOP END)
 }

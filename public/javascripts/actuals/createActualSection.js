@@ -8,6 +8,7 @@ export default async function createActualSection() {
   // clear the div
   actualDiv.innerHTML = "";
 
+  //------------------------- CREATE ACTUAL FORM---------------------------
   // create the actualFormPostDiv and append it to the actualDiv
   let actualFormPostDiv = document.createElement("div");
   actualFormPostDiv.id = "actualFormPostDiv";
@@ -16,8 +17,9 @@ export default async function createActualSection() {
 
   // create the actualItemsForm (module)
   createActualItemsForm(actualFormPostDiv);
-
-  // create div for actual items cards and append to actualItemCardsDiv
+  
+  
+  //------- CREATE ACTUAL ITEM CARDS UPON FIRST LOGIN AND GET REQUEST----------
   let actualItemCardsDiv = document.createElement("div");
   actualItemCardsDiv.id = "actualItemCardsDiv";
   actualItemCardsDiv.className = "row";
@@ -36,6 +38,7 @@ export default async function createActualSection() {
     createActualCards(listOfActualItems);
   }
 
+  //------- CREATE ACTUAL ITEM CARDS NEW SUBMISSION IN ACTUAL ITEMS FORM----------
   // listen for the actualFormPost POST creation
   let actualItemsForm = document.getElementById("actualItemsForm");
   actualItemsForm.addEventListener("submit", async (event) => {

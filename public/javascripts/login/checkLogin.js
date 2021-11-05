@@ -36,7 +36,7 @@ loginPost.addEventListener("submit", async (event) => {
 
     //Error handling
   } catch (error) {
-    loginContainerDiv.innerHTML = error.message;
+    throw new Error("Error sending POST to login user", error);
   }
 
   //run successfulLogin module

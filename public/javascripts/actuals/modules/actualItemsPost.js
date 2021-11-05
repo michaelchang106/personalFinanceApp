@@ -18,6 +18,6 @@ export default async function actualItemsPost(formDataJSONString) {
 
     //catch error
   } catch (error) {
-    return error.message;
+    throw new Error("Error sending POST to add actual item", error);
   }
 }
