@@ -123,9 +123,19 @@ router.post("/actualItemDelete", async function (req, res) {
 // ----------BUDGET CARD ITEM ROUTES------------
 
 // Budget Item Post
-router.post("/budgetItem/post", (req, res) => {
+router.post("/budgetItem/post", async (req, res) => {
   console.log("BUDGET ITEM CARD -- POST");
-  dbManager.addBudgetItem(req.body);
+  const budgetItem = await dbManager.addBudgetItem(req.body);
+  console.log("POSTING: ", budgetItem);
+  res.json(budgetItem);
+});
+
+//Load Budget History
+router.post("/budgetItem/loadBudget", async (req, res) => {
+  console.log("Loading USER DATA");
+  const budgetItem = await dbManager.getBudgetItem(req.body);
+  console.log("POSTING: ", budgetItem);
+  res.json(budgetItem);
 });
 
 module.exports = router;

@@ -257,7 +257,36 @@ function dbManager() {
       let option = { returnNewDocument: true, upsert: true };
 
       await collection.findOneAndUpdate(query, update, option);
-      console.log("--->Added item to budget");
+      const result = await collection.findOne(query);
+
+      console.log("--->Added item to budget: ", result.budgetItems);
+      return await result.budgetItems; // BECAUSE FindOneAndUpdate adds weird value field (not found in the db).
+    } finally {
+      await client.close();
+      console.log("Closing the connection");
+    }
+  };
+
+  database.getBudgetItem = async (user) => {
+    let client = await new MongoClient(url, { useUnifiedTopology: true });
+    try {
+      console.log("adding item to budget");
+      //connect to mongoClient using our url.
+      console.log("Connecting to the db");
+      await client.connect(); // establish a connection to the server
+      console.log("Connected!");
+      const db = client.db(dbName);
+      const collection = await db.collection(collectionBudgetActual);
+      const result = await collection.findOne(user);
+
+      console.log(result.budgetItems);
+      console.log("Loading Data");
+      if (result.budgetItems === undefined) {
+        console.log("---------->No Data");
+        return null;
+      }
+      console.log("---------->Found Data");
+      return result.budgetItems;
     } finally {
       await client.close();
       console.log("Closing the connection");
