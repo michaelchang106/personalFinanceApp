@@ -36,16 +36,16 @@ export default function createActualCards(listOfActualItems) {
     // append the card to the div
     actualItemCardsDiv.appendChild(actualItemCards);
 
-    // create div and insert edit / delete buttons
-    const actualEditDeleteDiv = document.createElement("div");
-    actualItemCards.appendChild(actualEditDeleteDiv);
+    // create div and insert delete buttons
+    const actualDeleteDiv = document.createElement("div");
+    actualItemCards.appendChild(actualDeleteDiv);
 
-    // create the edit and delete buttons by itemIndex number
+    // create the delete buttons by itemIndex number
     const deleteButton = document.createElement("span");
     deleteButton.innerHTML = `<button type='button' id='actualItemDeleteButton${itemIndex}'>Delete</button>`;
-    actualEditDeleteDiv.appendChild(deleteButton);
+    actualDeleteDiv.appendChild(deleteButton);
 
-    // add listeners for edit and delete button by itemIndex number
+    // add listeners for delete button by itemIndex number (module for FETCH)
     document
       .getElementById(`actualItemDeleteButton${itemIndex}`)
       .addEventListener("click", () => {

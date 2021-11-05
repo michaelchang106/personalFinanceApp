@@ -8,38 +8,36 @@ export default async function createActualSection() {
   // clear the div
   actualDiv.innerHTML = "";
 
-  // create the actualFormPostDiv
+  // create the actualFormPostDiv and append it to the actualDiv
   let actualFormPostDiv = document.createElement("div");
   actualFormPostDiv.id = "actualFormPostDiv";
   actualFormPostDiv.className = "card";
-
-  // actualFormPostDiv append it to the actualDiv
   actualDiv.appendChild(actualFormPostDiv);
 
-  // create the actualItemsForm
+  // create the actualItemsForm (module)
   createActualItemsForm(actualFormPostDiv);
 
-  // create div for actual items cards
+  // create div for actual items cards and append to actualItemCardsDiv
   let actualItemCardsDiv = document.createElement("div");
   actualItemCardsDiv.id = "actualItemCardsDiv";
   actualItemCardsDiv.className = "row";
   actualDiv.appendChild(actualItemCardsDiv);
 
-  // get the actualItems from database
+  // get the actualItems from database (module for FETCH)
   let actualItemsObj = await actualItemsGet();
+
   // sort the items by date
-  actualItemsObj.actualItems.sort(
+  const listOfActualItems = actualItemsObj.actualItems.sort(
     (a, b) => Date.parse(a.date) - Date.parse(b.date)
   );
 
-  // if there is data then render
+  // if there is data then render cards
   if (actualItemsObj.actualItems !== undefined) {
-    let listOfActualItems = actualItemsObj.actualItems;
-    // render the actualItemCards
+    // render the actualItemCards (module)
     createActualCards(listOfActualItems);
   }
 
-  // listen for the actualFormPost Post
+  // listen for the actualFormPost POST creation
   let actualItemsForm = document.getElementById("actualItemsForm");
   actualItemsForm.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -56,18 +54,16 @@ export default async function createActualSection() {
     // hacky way to add the userID
     formDataJSONString += `,"userID":"${localStorage.getItem("userID")}"}`;
 
-    // data returned from the database
+    // data returned from the database (module for FETCH)
     actualItemsObj = await actualItemsPost(formDataJSONString);
     // sort the items by date
-    actualItemsObj.actualItems.sort(
+    const listOfActualItems = actualItemsObj.actualItems.sort(
       (a, b) => Date.parse(a.date) - Date.parse(b.date)
     );
 
     // if there is data then render -- this needs to be .value after upsert from Mongo
     if (actualItemsObj.actualItems !== undefined) {
-      let listOfActualItems = actualItemsObj.actualItems;
-
-      // render the actualItemCards
+      // render the actualItemCards (module)
       createActualCards(listOfActualItems);
     }
   });
