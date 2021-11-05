@@ -1,10 +1,9 @@
-// imports
-// for tax calculations
+// imports for tax calculations
 import calculateTaxesFrontEnd from "../incomeTax/calculateTaxesFrontEnd.js";
-// for deleting user income data
+// imports for deleting user income data
 import showDeleteAndUpdateButton from "../incomeTax/modules/showDeleteAndUpdateButton.js";
 import renderTaxInformationHTML from "../incomeTax/modules/renderTaxInformationHTML.js";
-// create actual and budget sections
+// imports for create actual and budget sections
 import createBudgetSection from "../budget/createBudgetSection.js";
 import createActualSection from "../actuals/createActualSection.js";
 

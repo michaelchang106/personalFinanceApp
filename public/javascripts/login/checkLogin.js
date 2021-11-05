@@ -1,4 +1,4 @@
-import successfulLogin from "./successfulLogin.mjs";
+import successfulLogin from "./successfulLogin.js";
 
 let loginPost = document.getElementById("loginPost"); //FORM HTML
 let loginContainerDiv = document.getElementById("loginContainerDiv"); //DIV HTML

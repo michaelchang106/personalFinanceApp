@@ -5,9 +5,6 @@ let router = express.Router();
 const bcrypt = require("bcrypt");
 
 // for database connection
-const mongoose = require("mongoose");
-const userLoginInfo = require("../database/userSchema.js");
-const actualBudgetData = require("../database/actualBudgetSchema.js");
 const dbManager = require("../database/dbManager.js");
 
 // -----------------------FOR FILE UPLOAD - WORK IN PROGRESS -------------------
@@ -82,48 +79,32 @@ router.post("/incomePost", function (req, res) {
 router.post("/userIncomePost", async function (req, res) {
   console.log("USER POST INCOME -- POST");
   const loginInfo = req.body;
+  try {
+    dbManager.addIncomeInfo(loginInfo);
 
-  const salary = loginInfo.salary;
-  const state = loginInfo.state;
-  const marital = loginInfo.marital;
+    const salary = loginInfo.salary;
+    const state = loginInfo.state;
+    const marital = loginInfo.marital;
 
-  // query and update definitions
-  let query = { userID: loginInfo.userID };
-  let update = {
-    taxData: {
-      salary: loginInfo.salary,
-      state: loginInfo.state,
-      marital: loginInfo.marital,
-    },
-  };
-
-  //connect to database
-  await mongoose.connect("mongodb://localhost/UserLoginDB");
-
-  //query and update into database
-  await userLoginInfo.findOneAndUpdate(query, update);
-
-  // close database
-  await mongoose.connection.close();
-  res.json(salary, marital, state);
+    res.json(salary, marital, state);
+  } catch (error) {
+    console.log("Caught an error!", error);
+    res.send(error);
+  }
 });
 
 /* FETCH POST deleteUserIncome*/
 router.post("/deleteUserIncome", async function (req, res) {
   console.log("USER DELETE INCOME -- POST");
   const loginInfo = req.body;
+  try {
+    dbManager.deleteIncomeInfo(loginInfo);
 
-  // connect to database
-  await mongoose.connect("mongodb://localhost/UserLoginDB");
-
-  // query and update definitions
-  let query = { userID: loginInfo.userID };
-  let update = { $unset: { taxData: "" } };
-  await userLoginInfo.findOneAndUpdate(query, update);
-
-  // close database
-  await mongoose.connection.close();
-  res.send();
+    res.send();
+  } catch (error) {
+    console.log("Caught an error!", error);
+    res.send(error);
+  }
 });
 
 // ----------LOGIN ROUTES------------
@@ -133,11 +114,7 @@ router.post("/loginPost", async function (req, res) {
 
   //check if username exists
   try {
-    // connect to database
-    await mongoose.connect("mongodb://localhost/UserLoginDB");
-
-    // grabbing the data using username from MongoDB
-    let record = await userLoginInfo.findOne({ userID: loginInfo.username });
+    let record = await dbManager.findUser(loginInfo.username); //SHOULD THIS BE USERNAME OR USERID?
 
     bcrypt.compare(loginInfo.password, record.password, (err, result) => {
       if (result) {
@@ -147,10 +124,8 @@ router.post("/loginPost", async function (req, res) {
       }
     });
   } catch (error) {
+    console.log("Caught an error!", error);
     res.json({ error: "User not found" });
-  } finally {
-    // close database
-    await mongoose.connection.close();
   }
 });
 
@@ -161,54 +136,28 @@ router.post("/actualItemsPost", async function (req, res) {
   console.log("ACTUAL ITEM CARD -- POST");
   const actualItem = req.body;
 
-  // query, update, option definitions
-  const query = { userID: actualItem.userID };
-  const update = {
-    $push: {
-      actualItems: {
-        vendor: actualItem.vendor,
-        date: actualItem.date,
-        amount: actualItem.amount,
-        category: actualItem.category,
-      },
-    },
-  };
-
-  const options = { new: true, upsert: true };
   try {
-    await mongoose.connect("mongodb://localhost/UserLoginDB");
-    await actualBudgetData.findOneAndUpdate(query, update, options);
-  } catch {
-    res.status();
-  } finally {
-    await mongoose.connection.close();
+    let record = await dbManager.addActualItem(actualItem);
+    res.json(record);
+  } catch (error) {
+    console.log("Caught an error!", error);
+    res.send(error);
   }
-
-  await mongoose.connect("mongodb://localhost/UserLoginDB");
-  let record = await actualBudgetData.findOne(query);
-  await mongoose.connection.close();
-  res.json(record);
 });
 
+/* FETCH POST actualItemsGet*/
 router.post("/actualItemsGet", async function (req, res) {
   console.log("ACTUAL ITEM CARD -- GET");
-  const actualItem = req.body;
-
-  // query, update, option definitions
-  const query = { userID: actualItem.userID };
-  let record;
+  const user = req.body;
 
   try {
-    await mongoose.connect("mongodb://localhost/UserLoginDB");
+    let record = await dbManager.getActualItem(user);
 
-    record = await actualBudgetData.findOne(query);
-  } catch {
-    res.status();
-  } finally {
-    await mongoose.connection.close();
+    res.json(record);
+  } catch (error) {
+    console.log("Caught an error!", error);
+    res.send(error);
   }
-
-  res.json(record);
 });
 
 // ----------BUDGET CARD ITEM ROUTES------------

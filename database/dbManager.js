@@ -1,8 +1,6 @@
 const mongodb = require("mongodb");
 const MongoClient = mongodb.MongoClient;
 
-// creat users info
-
 function dbManager() {
   const database = {};
   const dbName = "UserLoginDB";
@@ -58,6 +56,130 @@ function dbManager() {
     }
   };
 
+  // ---------------- Income methods ------------------------
+  database.addIncomeInfo = async (loginInfo) => {
+    let client = await new MongoClient(url, { useUnifiedTopology: true });
+    try {
+      await client.connect(); // establish a connection to the server
+      console.log("Connected!");
+      const db = client.db(dbName);
+      const collection = await db.collection(collectionUser);
+
+      // query and update definitions
+      let query = { userID: loginInfo.userID };
+      let update = {
+        incomeData: {
+          salary: loginInfo.salary,
+          state: loginInfo.state,
+          marital: loginInfo.marital,
+        },
+      };
+
+      //query and update into database
+      await collection.findOneAndUpdate(query, update);
+
+      console.log("Udpated Income Info!");
+    } finally {
+      await client.close();
+      console.log("Closing the connection");
+    }
+  };
+
+  database.deleteIncomeInfo = async (loginInfo) => {
+    let client = await new MongoClient(url, { useUnifiedTopology: true });
+    try {
+      await client.connect(); // establish a connection to the server
+      console.log("Connected!");
+      const db = client.db(dbName);
+      const collection = await db.collection(collectionUser);
+
+      // query and update definitions
+      let query = { userID: loginInfo.userID };
+      let update = { $unset: { incomeData: "" } };
+
+      await collection.findOneAndUpdate(query, update);
+
+      console.log("Deleted Income Info!");
+    } finally {
+      await client.close();
+      console.log("Closing the connection");
+    }
+  };
+
+  // ---------------- Login methods ------------------------
+  database.findUser = async (username) => {
+    let client = await new MongoClient(url, { useUnifiedTopology: true });
+    try {
+      await client.connect(); // establish a connection to the server
+      console.log("Connected!");
+      const db = client.db(dbName);
+      const collection = await db.collection(collectionUser);
+
+      // query and update definitions
+      let query = { userID: username };
+
+      //query into database
+      return await collection.findOne(query);
+    } finally {
+      console.log("Got the user's info from DB!!");
+      await client.close();
+      console.log("Closing the connection");
+    }
+  };
+
+  // ---------------- Actual Card Item methods ------------------------
+  database.addActualItem = async (actualItem) => {
+    let client = await new MongoClient(url, { useUnifiedTopology: true });
+    try {
+      await client.connect(); // establish a connection to the server
+      console.log("Connected!");
+      const db = client.db(dbName);
+      const collection = await db.collection(collectionBudgetActual);
+
+      // query, update, option definitions
+      const query = { userID: actualItem.userID };
+      const update = {
+        $push: {
+          actualItems: {
+            vendor: actualItem.vendor,
+            date: actualItem.date,
+            amount: actualItem.amount,
+            category: actualItem.category,
+          },
+        },
+      };
+      const options = { returnNewDocument: true, upsert: true };
+
+      //query and update into database
+      return await collection.findOneAndUpdate(query, update, options); // this returns something weird
+      // return await collection.findOne(query);
+    } finally {
+      console.log("Added the user's Actual Item!!");
+      await client.close();
+      console.log("Closing the connection");
+    }
+  };
+
+  database.getActualItem = async (user) => {
+    let client = await new MongoClient(url, { useUnifiedTopology: true });
+    try {
+      await client.connect(); // establish a connection to the server
+      console.log("Connected!");
+      const db = client.db(dbName);
+      const collection = await db.collection(collectionBudgetActual);
+
+      // query, update, option definitions
+      const query = { userID: user.userID };
+
+      //query and update into database
+      return await collection.findOne(query);
+    } finally {
+      console.log("Got user's the Actual Items!!");
+      await client.close();
+      console.log("Closing the connection");
+    }
+  };
+
   // ---------------- Budget methods ------------------------
 
   database.addBudgetItem = async (budgetItem) => {
@@ -93,5 +215,4 @@ function dbManager() {
 
   return database;
 }
-
 module.exports = dbManager();

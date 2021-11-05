@@ -27,8 +27,9 @@ export default async function createActualSection() {
 
   // get the actualItems from database
   let actualItemsObj = await actualItemsGet();
+
   // if there is data then render
-  if (actualItemsObj !== null) {
+  if (actualItemsObj.actualItems !== undefined) {
     let listOfActualItems = actualItemsObj.actualItems;
     // render the actualItemCards
     createActualCards(listOfActualItems);
@@ -39,15 +40,11 @@ export default async function createActualSection() {
   actualItemsForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     // grab form data after click
-    console.log("HERE");
     const formData = new FormData(actualItemsForm);
 
     // convert FormData to JSON
     const plainFormData = Object.fromEntries(formData.entries());
     let formDataJSONString = JSON.stringify(plainFormData);
-
-    console.log(plainFormData);
-    console.log(formDataJSONString);
 
     // hacky way to add userID from localStorage to update in Database
     let oneLessThanLength = formDataJSONString.length - 1;
@@ -57,10 +54,11 @@ export default async function createActualSection() {
 
     // data returned from the database
     actualItemsObj = await actualItemsPost(formDataJSONString);
-
-    // if there is data then render
-    if (actualItemsObj !== null) {
+    console.log(actualItemsObj, "THE OBJECT WITH FINDONEANDUPDATE");
+    // if there is data then render -- this needs to be .value after upsert from Mongo
+    if (actualItemsObj.actualItems !== undefined) {
       let listOfActualItems = actualItemsObj.actualItems;
+
       // render the actualItemCards
       createActualCards(listOfActualItems);
     }
