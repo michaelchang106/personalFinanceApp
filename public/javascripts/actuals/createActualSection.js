@@ -26,13 +26,12 @@ export default async function createActualSection() {
   // get the actualItems from database (module for FETCH)
   let actualItemsObj = await actualItemsGet();
 
-  // sort the items by date
-  const listOfActualItems = actualItemsObj.actualItems.sort(
-    (a, b) => Date.parse(a.date) - Date.parse(b.date)
-  );
-
   // if there is data then render cards
   if (actualItemsObj.actualItems !== undefined) {
+    // sort the items by date
+    const listOfActualItems = actualItemsObj.actualItems.sort(
+      (a, b) => Date.parse(a.date) - Date.parse(b.date)
+    );
     // render the actualItemCards (module)
     createActualCards(listOfActualItems);
   }
@@ -56,13 +55,14 @@ export default async function createActualSection() {
 
     // data returned from the database (module for FETCH)
     actualItemsObj = await actualItemsPost(formDataJSONString);
-    // sort the items by date
-    const listOfActualItems = actualItemsObj.actualItems.sort(
-      (a, b) => Date.parse(a.date) - Date.parse(b.date)
-    );
 
     // if there is data then render -- this needs to be .value after upsert from Mongo
     if (actualItemsObj.actualItems !== undefined) {
+      // sort the items by date
+      const listOfActualItems = actualItemsObj.actualItems.sort(
+        (a, b) => Date.parse(a.date) - Date.parse(b.date)
+      );
+
       // render the actualItemCards (module)
       createActualCards(listOfActualItems);
     }

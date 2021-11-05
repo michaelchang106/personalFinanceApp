@@ -1,15 +1,21 @@
 const mongodb = require("mongodb");
 const MongoClient = mongodb.MongoClient;
+require("dotenv").config({ path: "./credentials.env" });
 
 function dbManager() {
   const database = {};
   const dbName = "UserLoginDB";
-  const url = process.env.MONGO_URL || "mongodb://localhost:27017";
+  const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@personalfinance.llaag.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+  const url = uri;
+  // const url = "mongodb://localhost:27017";
   const collectionUser = "userlogindbs";
   const collectionBudgetActual = "actualbudgetdatas";
 
   database.addUser = async (userInfo) => {
-    const client = await new MongoClient(url, { useUnifiedTopology: true });
+    const client = await new MongoClient(url, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     try {
       console.log("searching....");
       let value = await database.searchUser({ userID: userInfo.userID }); // Check if user is in the db.
@@ -38,7 +44,10 @@ function dbManager() {
   };
 
   database.searchUser = async (query) => {
-    let client = await new MongoClient(url, { useUnifiedTopology: true }); //connect to mongoClient using our url.
+    let client = await new MongoClient(url, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }); //connect to mongoClient using our url.
     try {
       console.log("Connecting to the db");
       await client.connect(); // establish a connection to the server
@@ -58,7 +67,10 @@ function dbManager() {
 
   // ---------------- Income methods ------------------------
   database.addIncomeInfo = async (loginInfo) => {
-    let client = await new MongoClient(url, { useUnifiedTopology: true });
+    let client = await new MongoClient(url, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     try {
       await client.connect(); // establish a connection to the server
       console.log("Connected!");
@@ -91,7 +103,10 @@ function dbManager() {
   };
 
   database.deleteIncomeInfo = async (loginInfo) => {
-    let client = await new MongoClient(url, { useUnifiedTopology: true });
+    let client = await new MongoClient(url, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     try {
       await client.connect(); // establish a connection to the server
       console.log("Connected!");
@@ -115,7 +130,10 @@ function dbManager() {
 
   // ---------------- Login methods ------------------------
   database.findUser = async (username) => {
-    let client = await new MongoClient(url, { useUnifiedTopology: true });
+    let client = await new MongoClient(url, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     try {
       await client.connect(); // establish a connection to the server
       console.log("Connected!");
@@ -125,12 +143,13 @@ function dbManager() {
       // query and update definitions
       let query = { userID: username };
 
-      //query into database
-      return await collection.findOne(query);
+      //query into database and return userInfo
+      const userInfo = await collection.findOne(query);
+      console.log("Got the user's info from DB!!");
+      return userInfo;
     } catch (error) {
       console.log("ERROR", error);
     } finally {
-      console.log("Got the user's info from DB!!");
       await client.close();
       console.log("Closing the connection");
     }
@@ -138,7 +157,10 @@ function dbManager() {
 
   // ---------------- Actual Card Item methods ------------------------
   database.addActualItem = async (actualItem) => {
-    let client = await new MongoClient(url, { useUnifiedTopology: true });
+    let client = await new MongoClient(url, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     try {
       await client.connect(); // establish a connection to the server
       console.log("Connected!");
@@ -172,7 +194,10 @@ function dbManager() {
   };
 
   database.getActualItem = async (user) => {
-    let client = await new MongoClient(url, { useUnifiedTopology: true });
+    let client = await new MongoClient(url, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     try {
       await client.connect(); // establish a connection to the server
       console.log("Connected!");
@@ -194,7 +219,10 @@ function dbManager() {
   };
 
   database.deleteActualItem = async (userAndItem) => {
-    let client = await new MongoClient(url, { useUnifiedTopology: true });
+    let client = await new MongoClient(url, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     try {
       await client.connect(); // establish a connection to the server
       console.log("Connected!");
@@ -234,7 +262,10 @@ function dbManager() {
   // ---------------- Budget methods ------------------------
 
   database.addBudgetItem = async (budgetItem) => {
-    let client = await new MongoClient(url, { useUnifiedTopology: true });
+    let client = await new MongoClient(url, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     try {
       console.log("adding item to budget");
       //connect to mongoClient using our url.

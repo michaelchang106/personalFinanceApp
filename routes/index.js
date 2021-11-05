@@ -1,6 +1,5 @@
 let express = require("express");
 let router = express.Router();
-
 // for login encryption
 const bcrypt = require("bcrypt");
 

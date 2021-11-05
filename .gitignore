@@ -1,4 +1,6 @@
+.env
 .DS_Store
+credentials.env
 
 # node modules folder
 node_modules
