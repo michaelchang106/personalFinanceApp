@@ -193,6 +193,44 @@ function dbManager() {
     }
   };
 
+  database.deleteActualItem = async (userAndItem) => {
+    let client = await new MongoClient(url, { useUnifiedTopology: true });
+    try {
+      await client.connect(); // establish a connection to the server
+      console.log("Connected!");
+      const db = client.db(dbName);
+      const collection = await db.collection(collectionBudgetActual);
+
+      // query definitions
+      const query = { userID: userAndItem.userID };
+
+      //query into database
+      let result = await collection.findOne(query);
+      // convert to typeof list of actualItems
+      result = result.actualItems;
+      //delete the item in index
+      result.splice(userAndItem.index, 1);
+
+      // update, options definitions
+      const update = {
+        $set: {
+          actualItems: result,
+        },
+      };
+      const options = { returnNewDocument: true, upsert: true };
+
+      //query and update into database
+      await collection.findOneAndUpdate(query, update, options); // this returns something weird
+      return await collection.findOne(query);
+    } catch (error) {
+      console.log("ERROR", error);
+    } finally {
+      console.log("Got user's the Actual Items!!");
+      await client.close();
+      console.log("Closing the connection");
+    }
+  };
+
   // ---------------- Budget methods ------------------------
 
   database.addBudgetItem = async (budgetItem) => {

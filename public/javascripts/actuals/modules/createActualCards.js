@@ -1,3 +1,5 @@
+import actualItemDelete from "./actualItemDelete.js";
+
 const dollarUSLocale = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
@@ -10,24 +12,44 @@ function toTitleCase(str) {
 }
 
 export default function createActualCards(listOfActualItems) {
-  let actualItemCardsDiv = document.getElementById("actualItemCardsDiv");
+  const actualItemCardsDiv = document.getElementById("actualItemCardsDiv");
   actualItemCardsDiv.innerHTML = "";
 
-  for (let item of listOfActualItems) {
-    let actualItemCards = document.createElement("div");
+  for (let [itemIndex, item] of listOfActualItems.entries()) {
+    const actualItemCards = document.createElement("div");
     actualItemCards.className = "card col-4";
+    actualItemCards.id = `actualItemCard${itemIndex}`;
     for (let [key, value] of Object.entries(item)) {
       key = toTitleCase(key);
       if (key === "Date") {
-        let tempDate = new Date(value);
+        const tempDate = new Date(value);
         value = tempDate.toLocaleDateString("en-US");
       } else if (key === "Amount") {
         value = dollarUSLocale.format(value);
       }
-      let actualItemDetails = document.createElement("div");
-      actualItemDetails.innerHTML = `${key} - ${value}`;
-      actualItemCards.appendChild(actualItemDetails);
+
+      // create div and insert the key value details
+      const actualItemDetailsDiv = document.createElement("div");
+      actualItemDetailsDiv.innerHTML = `${key} - ${value}`;
+      actualItemCards.appendChild(actualItemDetailsDiv);
     }
+    // append the card to the div
     actualItemCardsDiv.appendChild(actualItemCards);
+
+    // create div and insert edit / delete buttons
+    const actualEditDeleteDiv = document.createElement("div");
+    actualItemCards.appendChild(actualEditDeleteDiv);
+
+    // create the edit and delete buttons by itemIndex number
+    const deleteButton = document.createElement("span");
+    deleteButton.innerHTML = `<button type='button' id='actualItemDeleteButton${itemIndex}'>Delete</button>`;
+    actualEditDeleteDiv.appendChild(deleteButton);
+
+    // add listeners for edit and delete button by itemIndex number
+    document
+      .getElementById(`actualItemDeleteButton${itemIndex}`)
+      .addEventListener("click", () => {
+        actualItemDelete(itemIndex);
+      });
   }
 }

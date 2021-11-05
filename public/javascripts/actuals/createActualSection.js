@@ -27,6 +27,10 @@ export default async function createActualSection() {
 
   // get the actualItems from database
   let actualItemsObj = await actualItemsGet();
+  // sort the items by date
+  actualItemsObj.actualItems.sort(
+    (a, b) => Date.parse(a.date) - Date.parse(b.date)
+  );
 
   // if there is data then render
   if (actualItemsObj.actualItems !== undefined) {
@@ -54,7 +58,11 @@ export default async function createActualSection() {
 
     // data returned from the database
     actualItemsObj = await actualItemsPost(formDataJSONString);
-    console.log(actualItemsObj, "THE OBJECT WITH FINDONEANDUPDATE");
+    // sort the items by date
+    actualItemsObj.actualItems.sort(
+      (a, b) => Date.parse(a.date) - Date.parse(b.date)
+    );
+
     // if there is data then render -- this needs to be .value after upsert from Mongo
     if (actualItemsObj.actualItems !== undefined) {
       let listOfActualItems = actualItemsObj.actualItems;
