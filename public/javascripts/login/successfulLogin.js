@@ -15,7 +15,7 @@ export default function sucessfulLogin(loginData) {
   // if there is a userID upon successful login
   if (loginData.userID) {
     loginContainerDiv.innerHTML = "";
-    loginContainerDiv.innerHTML = `Welcome Back ${loginData.firstName} ${loginData.lastName}!`;
+    loginContainerDiv.innerHTML = `<span style='font-size:36px'>Welcome Back ${loginData.firstName} ${loginData.lastName}!</span>`;
 
     // change the HTML DIV ID from incomePost to userIncomePost
     document.getElementById("incomePost").setAttribute("id", "userIncomePost");
