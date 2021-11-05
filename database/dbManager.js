@@ -237,7 +237,9 @@ function dbManager() {
       //query into database
       let result = await collection.findOne(query);
       // change result = to list of actualItems
-      result = result.actualItems;
+      result = result.actualItems.sort(
+        (a, b) => Date.parse(a.date) - Date.parse(b.date)
+      );
       //delete the item in index
       result.splice(userAndItem.index, 1);
 
