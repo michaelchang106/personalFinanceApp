@@ -1,5 +1,4 @@
-// imports for tax calculations
-import calculateTaxesFrontEnd from "../incomeTax/calculateTaxesFrontEnd.js";
+import calculateTaxesFrontEnd from "../incomeTax/calculateTaxesFrontEnd.js"; // imports for tax calculations
 // imports for deleting user income data
 import showDeleteAndUpdateButton from "../incomeTax/modules/showDeleteAndUpdateButton.js";
 import renderTaxInformationHTML from "../incomeTax/modules/renderTaxInformationHTML.js";
@@ -8,8 +7,8 @@ import createBudgetSection from "../budget/createBudgetSection.js";
 import createActualSection from "../actuals/createActualSection.js";
 
 // for DOM rendering
-let loginContainerDiv = document.getElementById("loginContainerDiv"); //DIV HTML
-let taxAmountDiv = document.getElementById("taxAmountDiv");
+const loginContainerDiv = document.getElementById("loginContainerDiv"); //DIV HTML
+const taxAmountDiv = document.getElementById("taxAmountDiv");
 
 export default function sucessfulLogin(loginData) {
   // if there is a userID upon successful login
@@ -23,9 +22,9 @@ export default function sucessfulLogin(loginData) {
     // clear the current HTML and do DOM manipulation if there is incomeData from Database
     taxAmountDiv.innerHTML = "";
     if (loginData.incomeData) {
-      let salary = loginData.incomeData.salary;
-      let state = loginData.incomeData.state;
-      let marital = loginData.incomeData.marital;
+      const salary = loginData.incomeData.salary;
+      const state = loginData.incomeData.state;
+      const marital = loginData.incomeData.marital;
 
       // change the drop down to the values from the database
       document.getElementById("salary").value = salary;
@@ -36,7 +35,7 @@ export default function sucessfulLogin(loginData) {
       showDeleteAndUpdateButton();
 
       // create object to use in DOM manipulation
-      let taxAmounts = calculateTaxesFrontEnd(salary, marital, state);
+      const taxAmounts = calculateTaxesFrontEnd(salary, marital, state);
       // render the DOM manipulation to show the taxes
       renderTaxInformationHTML(taxAmounts);
 

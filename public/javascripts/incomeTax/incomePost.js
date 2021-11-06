@@ -1,11 +1,9 @@
-// https://simonplend.com/how-to-use-fetch-to-post-form-data-as-json-to-your-api/
-
-let incomePost = document.getElementById("incomePost"); //incomePost first by default
-let taxAmountDiv = document.getElementById("taxAmountDiv");
-
 import showDeleteAndUpdateButton from "./modules/showDeleteAndUpdateButton.js";
 import renderTaxInformationHTML from "./modules/renderTaxInformationHTML.js";
 import calculateTaxesFrontEnd from "./calculateTaxesFrontEnd.js";
+
+const incomePost = document.getElementById("incomePost"); //incomePost first by default
+const taxAmountDiv = document.getElementById("taxAmountDiv");
 
 // listen for submit on incomePost button
 incomePost.addEventListener("submit", async (event) => {
@@ -22,7 +20,7 @@ incomePost.addEventListener("submit", async (event) => {
   let formDataJSONString = JSON.stringify(plainFormData);
 
   // calculate taxes
-  let taxAmount = calculateTaxesFrontEnd(
+  const taxAmount = calculateTaxesFrontEnd(
     plainFormData.salary,
     plainFormData.marital,
     plainFormData.state
@@ -36,7 +34,7 @@ incomePost.addEventListener("submit", async (event) => {
     fetchAction = "/userIncomePost";
 
     // hacky way to add userID from localStorage to update in Database
-    let oneLessThanLength = formDataJSONString.length - 1;
+    const oneLessThanLength = formDataJSONString.length - 1;
     formDataJSONString = formDataJSONString.slice(0, oneLessThanLength);
 
     // hacky way to add the userID

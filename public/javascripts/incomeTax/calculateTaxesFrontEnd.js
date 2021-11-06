@@ -1,5 +1,4 @@
-// for tax calculations
-import federalTax from "./modules/federalTax.js";
+import federalTax from "./modules/federalTax.js"; // for tax calculations
 import ficaTax from "./modules/ficaTax.js";
 import stateTax from "./modules/stateTax.js";
 const dollarUSLocale = new Intl.NumberFormat("en-US", {

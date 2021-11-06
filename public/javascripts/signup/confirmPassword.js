@@ -1,9 +1,9 @@
-let password = document.getElementById("password"); //FORM HTML
-let confirmPassword = document.getElementById("confirmPassword"); //DIV HTML
-let message = document.createElement("div");
-let misMatchPasswordDiv = document.getElementById("misMatchPassword");
+const password = document.getElementById("password"); //FORM HTML
+const confirmPassword = document.getElementById("confirmPassword"); //DIV HTML
+const message = document.createElement("div");
+const misMatchPasswordDiv = document.getElementById("misMatchPassword");
 
-let check = function () {
+const check = function () {
   if (password.value != confirmPassword.value) {
     confirmPassword.style.color = "red";
     message.innerText = "Password Don't Match!!!";

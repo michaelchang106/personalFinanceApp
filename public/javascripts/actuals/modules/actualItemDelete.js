@@ -1,7 +1,6 @@
 import createActualCards from "./createActualCards.js";
 
 export default async function actualItemDelete(itemIndex) {
-  const actualItemCard = document.getElementById(`actualItemCard${itemIndex}`);
   let res;
   try {
     res = await fetch("/actualItemDelete", {

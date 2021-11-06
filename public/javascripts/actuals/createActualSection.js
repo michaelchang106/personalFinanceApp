@@ -1,8 +1,9 @@
-let actualDiv = document.getElementById("actualDiv");
 import createActualItemsForm from "./modules/createActualItemsForm.js";
 import actualItemsPost from "./modules/actualItemsPost.js";
 import actualItemsGet from "./modules/actualItemsGet.js";
 import createActualCards from "./modules/createActualCards.js";
+
+const actualDiv = document.getElementById("actualDiv");
 
 export default async function createActualSection() {
   // clear the div
@@ -10,7 +11,7 @@ export default async function createActualSection() {
 
   //------------------------- CREATE ACTUAL FORM---------------------------
   // create the actualFormPostDiv and append it to the actualDiv
-  let actualFormPostDiv = document.createElement("div");
+  const actualFormPostDiv = document.createElement("div");
   actualFormPostDiv.id = "actualFormPostDiv";
   actualFormPostDiv.className = "card";
   actualDiv.appendChild(actualFormPostDiv);
@@ -20,7 +21,7 @@ export default async function createActualSection() {
   
   
   //------- CREATE ACTUAL ITEM CARDS UPON FIRST LOGIN AND GET REQUEST----------
-  let actualItemCardsDiv = document.createElement("div");
+  const actualItemCardsDiv = document.createElement("div");
   actualItemCardsDiv.id = "actualItemCardsDiv";
   actualItemCardsDiv.className = "row";
   actualDiv.appendChild(actualItemCardsDiv);
@@ -40,7 +41,7 @@ export default async function createActualSection() {
 
   //------- CREATE ACTUAL ITEM CARDS NEW SUBMISSION IN ACTUAL ITEMS FORM----------
   // listen for the actualFormPost POST creation
-  let actualItemsForm = document.getElementById("actualItemsForm");
+  const actualItemsForm = document.getElementById("actualItemsForm");
   actualItemsForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     // grab form data after click
@@ -51,7 +52,7 @@ export default async function createActualSection() {
     let formDataJSONString = JSON.stringify(plainFormData);
 
     // hacky way to add userID from localStorage to update in Database
-    let oneLessThanLength = formDataJSONString.length - 1;
+    const oneLessThanLength = formDataJSONString.length - 1;
     formDataJSONString = formDataJSONString.slice(0, oneLessThanLength);
     // hacky way to add the userID
     formDataJSONString += `,"userID":"${localStorage.getItem("userID")}"}`;

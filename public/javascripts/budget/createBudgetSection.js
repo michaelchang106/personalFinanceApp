@@ -1,9 +1,9 @@
 import createBudgetForm from "./modules/createBudgetForm.js";
-let budgetDiv = document.getElementById("budgetDiv");
+const budgetDiv = document.getElementById("budgetDiv");
 
 export default async function createBudgetSection() {
   // create the budget div
-  let budgetFormDiv = document.createElement("div");
+  const budgetFormDiv = document.createElement("div");
   budgetFormDiv.id = "budgetFormDiv";
 
   //Create a budgetForm and childAppend to budgetFormDiv
@@ -12,7 +12,7 @@ export default async function createBudgetSection() {
   budgetDiv.innerHTML = "";
   budgetDiv.appendChild(budgetFormDiv);
 
-  let budgetItemCards = document.createElement("div");
+  const budgetItemCards = document.createElement("div");
   budgetItemCards.className = "row";
   budgetFormDiv.appendChild(budgetItemCards);
 
@@ -21,14 +21,14 @@ export default async function createBudgetSection() {
   const storedBudgetData = await loadBudgetData();
   let index = 0;
   if (storedBudgetData) {
-    for (let item of storedBudgetData) {
+    for (const item of storedBudgetData) {
       //Create for to delete budget
       index = createBudgetCard(item, budgetItemCards, index);
     }
   }
 
   // Submit data to database
-  let budgetForm = document.getElementById("budgetItemsForm");
+  const budgetForm = document.getElementById("budgetItemsForm");
   index = await submitBudgetToDB(budgetForm, budgetItemCards, index);
 }
 
@@ -107,7 +107,7 @@ function createBudgetCard(budgetForm, parentDiv, index) {
   parentDiv.appendChild(cardDiv);
   cardDiv.appendChild(formElement);
 
-  for (let [key, value] of Object.entries(budgetForm)) {
+  for (const [key, value] of Object.entries(budgetForm)) {
     const valueDiv = createCardDiv(key, value);
     formElement.appendChild(valueDiv);
     formElement.appendChild(deleteBtn);
@@ -132,7 +132,7 @@ function createCardDiv(key, value) {
   key = toTitleCase(key);
 
   if (key === "Date") {
-    let tempDate = new Date(value);
+    const tempDate = new Date(value);
     value = tempDate.toLocaleDateString("en-US");
   } else if (key === "Amount") {
     value = dollarUSLocale.format(value);

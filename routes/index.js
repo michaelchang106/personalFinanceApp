@@ -1,5 +1,5 @@
-let express = require("express");
-let router = express.Router();
+const express = require("express");
+const router = express.Router();
 // for login encryption
 const bcrypt = require("bcrypt");
 
@@ -60,7 +60,7 @@ router.post("/loginPost", async function (req, res) {
 
   //check if username exists
   try {
-    let record = await dbManager.findUser(loginInfo.username); //SHOULD THIS BE USERNAME OR USERID?
+    const record = await dbManager.findUser(loginInfo.username); //SHOULD THIS BE USERNAME OR USERID?
 
     bcrypt.compare(loginInfo.password, record.password, (err, result) => {
       if (result) {
@@ -83,7 +83,7 @@ router.post("/actualItemsPost", async function (req, res) {
   const actualItem = req.body;
 
   try {
-    let record = await dbManager.addActualItem(actualItem);
+    const record = await dbManager.addActualItem(actualItem);
     res.json(record);
   } catch (error) {
     console.log("Caught an error!", error);
@@ -97,7 +97,7 @@ router.post("/actualItemsGet", async function (req, res) {
   const user = req.body;
 
   try {
-    let record = await dbManager.getActualItem(user);
+    const record = await dbManager.getActualItem(user);
     res.json(record);
   } catch (error) {
     console.log("Caught an error!", error);
@@ -111,7 +111,7 @@ router.post("/actualItemDelete", async function (req, res) {
   const userAndItem = req.body;
 
   try {
-    let record = await dbManager.deleteActualItem(userAndItem);
+    const record = await dbManager.deleteActualItem(userAndItem);
     res.json(record);
   } catch (error) {
     console.log("Caught an error!", error);
@@ -125,7 +125,7 @@ router.post("/actualItemEdit", async function (req, res) {
   const actualItem = req.body;
 
   try {
-    let record = await dbManager.editActualItem(actualItem);
+    const record = await dbManager.editActualItem(actualItem);
     res.json(record);
   } catch (error) {
     console.log("Caught an error!", error);

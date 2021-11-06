@@ -1,8 +1,8 @@
 // for deleting user income data
 import deleteUserIncome from "./deleteUserIncome.js";
 
-let incomeButton = document.getElementById("incomeButton");
-let deleteIncomeSpan = document.getElementById("deleteIncomeSpan");
+const incomeButton = document.getElementById("incomeButton");
+const deleteIncomeSpan = document.getElementById("deleteIncomeSpan");
 
 export default function showDeleteAndUpdateButton() {
   //change submit to update

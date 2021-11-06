@@ -48,7 +48,7 @@ export default async function editActualCard(itemIndex) {
     </form>`;
 
   // listen for the actualItemEdit POST creation
-  let actualItemEditDiv = document.getElementById("actualItemEdit");
+  const actualItemEditDiv = document.getElementById("actualItemEdit");
   actualItemEditDiv.addEventListener("submit", async (event) => {
     event.preventDefault();
     // grab form data after click
@@ -59,7 +59,7 @@ export default async function editActualCard(itemIndex) {
     let formDataJSONString = JSON.stringify(plainFormData);
 
     // hacky way to add userID from localStorage to update in Database
-    let oneLessThanLength = formDataJSONString.length - 1;
+    const oneLessThanLength = formDataJSONString.length - 1;
     formDataJSONString = formDataJSONString.slice(0, oneLessThanLength);
     // hacky way to add the userID
     formDataJSONString += `,"userID":"${localStorage.getItem("userID")}"}`;
