@@ -23,8 +23,6 @@ As a registered user, you can log your expected budget, which the data will be s
 
 ## Google Slides
 
-## Screenshots showing functionality of constraints
-
 ## Folder Content:
 
 ### Actuals
@@ -36,6 +34,8 @@ As a registered user, you can log your expected budget, which the data will be s
 - Contains all the JavaScript code for rendering a BUDGET form, which can be used to log budget data input from the user. Data inputed from the user is then stored in a Mongo Database, which is retrieved and rendered to the main page when a user logs in. New input data is also rendered as soon as a user inputs values.
 
 ### Income Tax
+
+-
 
 ### Login
 

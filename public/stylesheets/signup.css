@@ -16,3 +16,26 @@ label {
 form {
   border: solid;
 }
+
+/* --------BUTTONS ----------*/
+#signUpButton {
+  background-color: #04aa6d;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 3px;
+  border: none;
+  cursor: pointer;
+  width: 40%;
+  border: solid black;
+}
+
+#clearContentBtn {
+  background-color: lightgray;
+  color: black;
+  padding: 14px 20px;
+  margin: 8px 3px;
+  border: none;
+  cursor: pointer;
+  width: 40%;
+  border: solid black;
+}

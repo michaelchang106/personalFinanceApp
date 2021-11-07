@@ -21,7 +21,7 @@ export default function createActualCards(listOfActualItems) {
   // LOOP THRU LIST OF ACTUAL ITEMS AND CREATE DIVS FOR THEM (OUTER FOR LOOP)
   for (let [itemIndex, item] of listOfActualItems.entries()) {
     const actualItemCards = document.createElement("div");
-    actualItemCards.className = "card col-4";
+    actualItemCards.className = "card col-4 actualCard m-1";
     actualItemCards.id = `actualItemCard${itemIndex}`;
 
     // LOOP THRU THE ITEM DETAILS AND RENDER THEM (INNER FOR LOOP)
@@ -36,7 +36,7 @@ export default function createActualCards(listOfActualItems) {
 
       // create div and insert the key value details
       const actualItemDetailsDiv = document.createElement("div");
-      actualItemDetailsDiv.innerHTML = `${key} - ${value}`;
+      actualItemDetailsDiv.innerHTML = `<strong>${key}</strong> - ${value}`;
       actualItemCards.appendChild(actualItemDetailsDiv);
     } // ------------------(INNER FOR LOOP END)
 
@@ -46,10 +46,12 @@ export default function createActualCards(listOfActualItems) {
     // create div and insert delete buttons
     const actualEditDeleteDiv = document.createElement("div");
     actualItemCards.appendChild(actualEditDeleteDiv);
+    actualEditDeleteDiv.className = "d-flex justify-content-center";
 
     // create the delete buttons by itemIndex number
     const deleteButton = document.createElement("span");
-    deleteButton.innerHTML = `<button type='button' id='actualItemDeleteButton${itemIndex}'>Delete</button>`;
+    deleteButton.innerHTML = `<button type='button' id='actualItemDeleteButton${itemIndex}' class='btn btn-danger m-1'>Delete</button>`;
+    // deleteButton.className = "btn btn-danger m-1";
     actualEditDeleteDiv.appendChild(deleteButton);
 
     // add listeners for delete button by itemIndex number (module for FETCH)
@@ -64,7 +66,7 @@ export default function createActualCards(listOfActualItems) {
 
     // create the Edit buttons by itemIndex number
     const EditButton = document.createElement("span");
-    EditButton.innerHTML = `<button type='button' id='actualItemEditButton${itemIndex}'>Edit</button>`;
+    EditButton.innerHTML = `<button type='button' id='actualItemEditButton${itemIndex}' class='btn btn-secondary m-1'>Edit</button>`;
     actualEditDeleteDiv.appendChild(EditButton);
 
     // add listeners for Edit button by itemIndex number (module for FETCH)

@@ -62,7 +62,8 @@ form {
   margin: 8px 0;
 }
 /* Card Styling */
-.deleteForm {
+.deleteForm,
+.actualCard {
   border-radius: 0.75;
   border: outset black;
   width: 31.333%;
@@ -87,6 +88,7 @@ form {
   padding: 7px 10px;
   margin: 8px 0;
   text-align: center;
+  width: 24%;
 }
 
 input:focus {

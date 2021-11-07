@@ -1,6 +1,6 @@
 export default function createBudgetItemsForm(budgetFormPostDiv) {
   budgetFormPostDiv.innerHTML = `<form id="budgetItemsForm" action="">
-      <input type="text" name="date" placeholder="MM/YYYY" required>
+      <input type="text" name="date" placeholder="MM/DD/YYYY" required>
       <input type="number" name="amount" placeholder="Amount" min="0" step="0.01" required>
       <select id="category" name="category" required>
                   <option value="" disable selected hidden>
