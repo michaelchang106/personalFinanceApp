@@ -9,10 +9,16 @@ loginPost.addEventListener("submit", async (event) => {
   // grab FormData from HTML
   const formData = new FormData(loginPost);
 
-  // convert FormData to JSON
+  // convert FormData to plainForm
   const plainFormData = Object.fromEntries(formData.entries());
-  const formDataJSONString = JSON.stringify(plainFormData);
 
+  //store userID and password to localStorage
+  localStorage.setItem("userID", plainFormData.username);
+  localStorage.setItem("password", plainFormData.password);
+
+  // convert FormData to JSON
+  const formDataJSONString = JSON.stringify(plainFormData);
+  
   // attempt to FETCH data from database
   try {
     const res = await fetch("/loginPost", {
@@ -29,9 +35,6 @@ loginPost.addEventListener("submit", async (event) => {
 
     //THE JSON with the USERS DATA returned from database
     loginData = await res.json();
-
-    //store userID to localStorage
-    localStorage.setItem("userID", loginData.userID);
 
     //Error handling
   } catch (error) {
