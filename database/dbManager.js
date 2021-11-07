@@ -365,14 +365,42 @@ function dbManager() {
       const collection = await db.collection(collectionBudgetActual);
       const result = await collection.findOne(user);
 
-      console.log(result.budgetItems);
       console.log("Loading Data");
       if (result.budgetItems === undefined) {
         console.log("---------->No Data");
         return null;
       }
       console.log("---------->Found Data");
-      return result.budgetItems;
+      return result;
+    } finally {
+      await client.close();
+      console.log("Closing the connection");
+    }
+  };
+
+  database.deleteBudgetItem = async (user) => {
+    let client = await new MongoClient(url, { useUnifiedTopology: true });
+    try {
+      console.log("adding item to budget");
+      //connect to mongoClient using our url.
+      console.log("Connecting to the db");
+      await client.connect(); // establish a connection to the server
+      console.log("Connected!");
+      const db = client.db(dbName);
+      const collection = await db.collection(collectionBudgetActual);
+
+      let result = await collection.findOne({ userID: user.userID });
+      let budgetItemtoRm = result.budgetItems;
+
+      await budgetItemtoRm.splice(user.index, 1); //This is to remove at index
+      await collection.updateOne(
+        { userID: user.userID },
+        { $set: { budgetItems: budgetItemtoRm } }
+      );
+
+      result = await collection.findOne({ userID: user.userID });
+
+      return result;
     } finally {
       await client.close();
       console.log("Closing the connection");

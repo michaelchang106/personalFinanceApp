@@ -26,6 +26,7 @@ app.use(function (req, res, next) {
   next(createError(404));
 });
 
+console.log("Dir --->", __dirname);
 // error handler
 app.use(function (err, req, res) {
   // set locals, only providing error in development

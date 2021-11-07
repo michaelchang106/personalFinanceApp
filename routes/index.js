@@ -151,4 +151,10 @@ router.post("/budgetItem/loadBudget", async (req, res) => {
   res.json(budgetItem);
 });
 
+// Delete Budget Item Post
+router.post("/budgetItem/delete", async (req, res) => {
+  const newColleciton = await dbManager.deleteBudgetItem(req.body);
+  res.json(newColleciton);
+});
+
 module.exports = router;

@@ -15,6 +15,6 @@ export default function createBudgetItemsForm(actualFormPostDiv) {
                   <option value="Auto & Transportation">Auto & Transportation</option>
                   <option value="Other">Other</option>
                 </select>
-      <button type="submit" id="actualCardSubmit">Add Budget Item</button>    
+      <button type="submit" id="budgetCardSubmit">Add Budget Item</button>    
     </form>`;
 }

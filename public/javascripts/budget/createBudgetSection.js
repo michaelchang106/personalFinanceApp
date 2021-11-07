@@ -13,7 +13,7 @@ export default async function createBudgetSection() {
   budgetDiv.appendChild(budgetFormDiv);
 
   const budgetItemCards = document.createElement("div");
-  budgetItemCards.className = "row";
+  budgetItemCards.className = "row budgetContainer";
   budgetFormDiv.appendChild(budgetItemCards);
 
   //Load previously stored data.
@@ -21,7 +21,7 @@ export default async function createBudgetSection() {
   const storedBudgetData = await loadBudgetData();
   let index = 0;
   if (storedBudgetData) {
-    for (const item of storedBudgetData) {
+    for (const item of storedBudgetData.budgetItems) {
       //Create for to delete budget
       index = createBudgetCard(item, budgetItemCards, index);
     }
@@ -29,14 +29,15 @@ export default async function createBudgetSection() {
 
   // Submit data to database
   const budgetForm = document.getElementById("budgetItemsForm");
-  index = await submitBudgetToDB(budgetForm, budgetItemCards, index);
+  await submitBudgetToDB(budgetForm, budgetItemCards);
 }
 
 //--------------------Load User Data------------------------------
+
 async function loadBudgetData() {
   console.log("Fetch POST LOAD");
   try {
-    // FETCH POST actualItemsPost
+    // FETCH POST budgetItem Post
     const res = await fetch("/budgetItem/loadBudget", {
       method: "POST",
       headers: {
@@ -61,7 +62,7 @@ async function loadBudgetData() {
 //--------------------Submit New Data and Display------------------
 
 // Helper add budget to submite for to mongoDB.
-async function submitBudgetToDB(budgetForm, parentDiv, index) {
+async function submitBudgetToDB(budgetForm, parentDiv) {
   // Create new form data from user input.
   budgetForm.addEventListener("submit", async (event) => {
     event.preventDefault(); //stops event from routing to a new pages
@@ -84,34 +85,86 @@ async function submitBudgetToDB(budgetForm, parentDiv, index) {
 
     const budgetJSON = await res.json();
 
-    return createBudgetCard(
-      budgetJSON[budgetJSON.length - 1],
-      parentDiv,
-      index
-    );
+    let index = budgetJSON.length - 1;
+    return createBudgetCard(budgetJSON[index], parentDiv, index);
   });
+}
+
+//----------------Delete a budget Item an reload cards----------------------
+
+async function deleteCard(event, index) {
+  event.preventDefault();
+
+  try {
+    // FETCH POST actualItemsPost
+    const res = await fetch("/budgetItem/delete", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: `{"userID":"${localStorage.userID}", "index": "${index}"}`,
+    });
+    if (!res.ok) {
+      throw new Error("Response not ok " + res.status);
+    }
+
+    // //Get updated budget data
+    let storedBudgetData = await res.json();
+    storedBudgetData = storedBudgetData.budgetItems;
+
+    //Erase currently viewd budget cards
+    const budgetContainer = document.querySelector(".budgetContainer");
+    budgetContainer.innerHTML = "";
+
+    //----------Rerender the page ---------------
+    index = 0;
+    for (let item of storedBudgetData) {
+      index = createBudgetCard(item, budgetContainer, index);
+    }
+
+    //Display new budget
+  } catch (error) {
+    return error.message;
+  }
 }
 
 // Add a budget
 function createBudgetCard(budgetForm, parentDiv, index) {
-  //Create a form
-  const formElement = document.createElement("form");
-  formElement.id = `formDelete${index}`;
-  index += 1;
   const deleteBtn = document.createElement("button");
+  const editBtn = document.createElement("button");
+  editBtn.type = "button";
   deleteBtn.type = "submit";
   deleteBtn.innerHTML = "Delete";
-  //Format for size
-  const cardDiv = document.createElement("div");
-  cardDiv.className = "card col-4 mt-3";
+
+  //Format for size -- made a form to handle indexes
+  const cardDiv = document.createElement("form");
+  cardDiv.className = "card col-4 mt-3 deleteForm";
+
+  cardDiv.id = `formDelete-${index}`;
+  const indexInput = document.createElement("input");
+  indexInput.value = index;
+  indexInput.name = "index";
+  indexInput.type = "hidden";
+
+  cardDiv.appendChild(indexInput);
   parentDiv.appendChild(cardDiv);
-  cardDiv.appendChild(formElement);
+  // cardDiv.appendChild(formElement);
 
   for (const [key, value] of Object.entries(budgetForm)) {
     const valueDiv = createCardDiv(key, value);
-    formElement.appendChild(valueDiv);
-    formElement.appendChild(deleteBtn);
+    cardDiv.appendChild(valueDiv);
+    cardDiv.appendChild(deleteBtn);
+    // cardDiv.appendChild(editBtn);
   }
+  const deleteForm = document.getElementById(`formDelete-${index}`);
+
+  deleteForm.addEventListener("submit", async (event) => {
+    await deleteCard(event, indexInput.value);
+    index = 0;
+  });
+
+  index += 1;
 
   return index;
 }
