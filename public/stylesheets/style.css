@@ -35,7 +35,8 @@ form {
 }
 
 #incomeButton,
-#actualCardSubmit {
+#actualCardSubmit,
+#budgetCardSubmit {
   background-color: #04aa6d;
   color: white;
   padding: 14px 20px;
@@ -54,10 +55,17 @@ form {
 }
 
 #actualFormPostDiv,
-#actualItemsForm {
+#actualItemsForm,
+#budgetItemsForm {
   background-color: slategray;
   padding: 7px 10px;
   margin: 8px 0;
+}
+/* Card Styling */
+.deleteForm {
+  border-radius: 0.75;
+  border: outset black;
+  width: 31.333%;
 }
 
 /* --------SECTIONS ----------*/

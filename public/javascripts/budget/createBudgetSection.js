@@ -1,6 +1,9 @@
 import createBudgetForm from "./modules/createBudgetForm.js";
 const budgetDiv = document.getElementById("budgetDiv");
 
+const outerBudgetDiv = document.createElement("div");
+// outerBudgetDiv.innerHTML = "d-flex justify-content-center";
+
 export default async function createBudgetSection() {
   // create the budget div
   const budgetFormDiv = document.createElement("div");
@@ -131,17 +134,27 @@ async function deleteCard(event, index) {
 
 // Add a budget
 function createBudgetCard(budgetForm, parentDiv, index) {
+  const btnContain = document.createElement("div");
+  btnContain.className = "d-flex justify-content-center";
+  // const innerBtnContain = btnContain;
+  // innerBtnContain.className = "col-6";
+
   const deleteBtn = document.createElement("button");
   const editBtn = document.createElement("button");
   editBtn.type = "button";
   deleteBtn.type = "submit";
   deleteBtn.innerHTML = "Delete";
+  deleteBtn.className = "btn btn-danger m-1";
+  editBtn.innerHTML = "Edit";
+  editBtn.className = "editBtn";
 
   //Format for size -- made a form to handle indexes
   const cardDiv = document.createElement("form");
-  cardDiv.className = "card col-4 mt-3 deleteForm";
+  cardDiv.className = "card col-4 m-1 deleteForm";
 
   cardDiv.id = `formDelete-${index}`;
+
+  // editBtn.id = `editBtn-${index}`;
   const indexInput = document.createElement("input");
   indexInput.value = index;
   indexInput.name = "index";
@@ -154,8 +167,10 @@ function createBudgetCard(budgetForm, parentDiv, index) {
   for (const [key, value] of Object.entries(budgetForm)) {
     const valueDiv = createCardDiv(key, value);
     cardDiv.appendChild(valueDiv);
-    cardDiv.appendChild(deleteBtn);
-    // cardDiv.appendChild(editBtn);
+    cardDiv.appendChild(btnContain);
+
+    btnContain.appendChild(deleteBtn);
+    // btnContain.appendChild(editBtn);
   }
   const deleteForm = document.getElementById(`formDelete-${index}`);
 
@@ -192,6 +207,6 @@ function createCardDiv(key, value) {
   }
 
   const budgetDiv = document.createElement("div");
-  budgetDiv.innerHTML = `${key} - ${value}`;
+  budgetDiv.innerHTML = `<strong>${key} </strong>- ${value}`;
   return budgetDiv;
 }

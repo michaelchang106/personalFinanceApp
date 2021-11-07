@@ -1,5 +1,5 @@
-export default function createBudgetItemsForm(actualFormPostDiv) {
-  actualFormPostDiv.innerHTML = `<form id="budgetItemsForm" action="">
+export default function createBudgetItemsForm(budgetFormPostDiv) {
+  budgetFormPostDiv.innerHTML = `<form id="budgetItemsForm" action="">
       <input type="text" name="date" placeholder="MM/YYYY" required>
       <input type="number" name="amount" placeholder="Amount" min="0" step="0.01" required>
       <select id="category" name="category" required>
@@ -15,6 +15,6 @@ export default function createBudgetItemsForm(actualFormPostDiv) {
                   <option value="Auto & Transportation">Auto & Transportation</option>
                   <option value="Other">Other</option>
                 </select>
-      <button type="submit" id="budgetCardSubmit">Add Budget Item</button>    
+      <button type="submit" id="budgetCardSubmit" class="mt-2">Add Budget Item</button>    
     </form>`;
 }

@@ -9,15 +9,28 @@ import createActualSection from "../actuals/createActualSection.js";
 // for DOM rendering
 const loginContainerDiv = document.getElementById("loginContainerDiv"); //DIV HTML
 const taxAmountDiv = document.getElementById("taxAmountDiv");
+const logoutAnchor = document.createElement("a");
+const signoutDiv = document.createElement("div");
+logoutAnchor.href = "/";
+logoutAnchor.id = "signout";
+logoutAnchor.innerHTML = "Signout";
 
 export default function sucessfulLogin(loginData) {
   // if there is a userID upon successful login
   if (loginData.userID) {
     loginContainerDiv.innerHTML = "";
     loginContainerDiv.innerHTML = `<span style='font-size:36px'>Welcome Back ${loginData.firstName} ${loginData.lastName}!</span>`;
+    loginContainerDiv.appendChild(signoutDiv);
+    signoutDiv.appendChild(logoutAnchor);
 
     // change the HTML DIV ID from incomePost to userIncomePost
     document.getElementById("incomePost").setAttribute("id", "userIncomePost");
+
+    //Clear local storage when user signsout
+    const singoutElement = document.querySelector("#signout");
+    singoutElement.addEventListener("click", () => {
+      localStorage.clear();
+    });
 
     // clear the current HTML and do DOM manipulation if there is incomeData from Database
     taxAmountDiv.innerHTML = "";
