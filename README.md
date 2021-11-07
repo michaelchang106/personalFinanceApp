@@ -23,15 +23,6 @@ As a registered user, you can log your expected budget, which the data will be s
 
 ## Google Slides
 
-## SQL queries used to query information from our database with test data (DML)
-
-[Various SQL query demonstrations](./database/sql_queries.sql):
-
-- showing join of at least three tables
-- subqueries
-- group by with a having clause
-- complex search criterion
-
 ## Screenshots showing functionality of constraints
 
 ## Folder Content:
