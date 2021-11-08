@@ -1,6 +1,6 @@
 const mongodb = require("mongodb");
 const MongoClient = mongodb.MongoClient;
-require("dotenv").config({ path: "./credentials.env" });
+require("dotenv").config();
 
 function dbManager() {
   const database = {};
