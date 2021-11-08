@@ -7,6 +7,8 @@ An application that's provides a tax calculator that calculates calculate taxes 
 As a registered user, you can log your expected budget, which the data will be saved for later use. Similarly, you can log actual expenses, which are also stored. If you make mistake logging data, you can delete/edit a budget or acutal item at any time.
 
 ## Project URL: 
+[Personal Finance Heroku Depolyment](https://personal-finance-cs5610-webdev.herokuapp.com/).
+
 
 ## Video Demonstration: 
 [Personal Finance Youtube Demo Video](https://youtu.be/tx32Xv3_gu8).
