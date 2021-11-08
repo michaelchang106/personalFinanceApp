@@ -1,9 +1,12 @@
 {
   "name": "personalfinanceapp",
   "version": "0.0.0",
+  "author": "Michael Chang & Daniel Lisko",
+  "license": "MIT",
   "private": true,
+  "main": "app.js",
   "scripts": {
-    "start": "./node_modules/nodemon/bin/nodemon.js ./bin/www"
+    "start": "node app.js"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
