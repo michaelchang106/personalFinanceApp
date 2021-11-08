@@ -1,6 +1,6 @@
 const mongodb = require("mongodb");
 const MongoClient = mongodb.MongoClient;
-require("dotenv").config();
+require("dotenv").config({ path: "./credentials.env" });
 
 function dbManager() {
   const database = {};
@@ -169,14 +169,23 @@ function dbManager() {
 
       // query, update, option definitions
       const query = { userID: actualItem.userID };
+
+      let result = await collection.findOne(query);
+
+      // change result = to list of actualItems and push new item and sort
+      result = result.actualItems;
+
+      result.push({
+        vendor: actualItem.vendor,
+        date: actualItem.date,
+        amount: actualItem.amount,
+        category: actualItem.category,
+      });
+      result.sort((a, b) => Date.parse(a.date) - Date.parse(b.date));
+
       const update = {
-        $push: {
-          actualItems: {
-            vendor: actualItem.vendor,
-            date: actualItem.date,
-            amount: actualItem.amount,
-            category: actualItem.category,
-          },
+        $set: {
+          actualItems: result,
         },
       };
       const options = { returnNewDocument: true, upsert: true };
@@ -240,8 +249,9 @@ function dbManager() {
       result = result.actualItems.sort(
         (a, b) => Date.parse(a.date) - Date.parse(b.date)
       );
+
       //delete the item in index
-      result.splice(userAndItem.index, 1);
+      result.splice(userAndItem.itemIndex, 1);
 
       // update, options definitions
       const update = {

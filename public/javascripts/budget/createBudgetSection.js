@@ -38,7 +38,6 @@ export default async function createBudgetSection() {
 //--------------------Load User Data------------------------------
 
 async function loadBudgetData() {
-  console.log("Fetch POST LOAD");
   try {
     // FETCH POST budgetItem Post
     const res = await fetch("/budgetItem/loadBudget", {

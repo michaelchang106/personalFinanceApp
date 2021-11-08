@@ -20,7 +20,7 @@ export default async function actualItemDelete(itemIndex) {
     throw new Error("Error sending POST to delete actual item", error);
   } finally {
     const actualItemsObj = await res.json();
-    console.log(actualItemsObj);
+
     // if there is data then render cards
     if (actualItemsObj.actualItems !== undefined) {
       // sort the items by date

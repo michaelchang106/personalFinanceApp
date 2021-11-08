@@ -139,7 +139,6 @@ router.post("/actualItemEdit", async function (req, res) {
 router.post("/budgetItem/post", async (req, res) => {
   console.log("BUDGET ITEM CARD -- POST");
   const budgetItem = await dbManager.addBudgetItem(req.body);
-  console.log("POSTING: ", budgetItem);
   res.json(budgetItem);
 });
 
@@ -147,7 +146,6 @@ router.post("/budgetItem/post", async (req, res) => {
 router.post("/budgetItem/loadBudget", async (req, res) => {
   console.log("Loading USER DATA");
   const budgetItem = await dbManager.getBudgetItem(req.body);
-  console.log("POSTING: ", budgetItem);
   res.json(budgetItem);
 });
 
