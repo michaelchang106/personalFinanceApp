@@ -7,7 +7,6 @@ async function checkLocalStorageLoginInfo() {
     localStorage.getItem("password") !== undefined &&
     localStorage.getItem("password") !== null
   ) {
-    console.log("I AM IN THE IF STATEMENT");
     let loginData;
     let formDataJSONString = {
       username: localStorage.getItem("userID"),
