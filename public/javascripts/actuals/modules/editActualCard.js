@@ -20,10 +20,12 @@ export default async function editActualCard(itemIndex) {
     .substr(7);
   const amount = actualItemString
     .substr(indexOfAmount, indexOfCategory - indexOfAmount)
-    .substr(10);
+    .substr(10).replace(/,/g,"");
   const category = actualItemString
     .substr(indexOfCategory, indexOfDeleteEdit - indexOfCategory)
     .substr(11);
+
+  console.log(vendor, date, amount, category);
 
   // convert the card into a form for editing the card
   actualItemCard.innerHTML = `<form id="actualItemEdit" action="">
