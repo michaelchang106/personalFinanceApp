@@ -4,9 +4,8 @@
   "author": "Michael Chang & Daniel Lisko",
   "license": "MIT",
   "private": true,
-  "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node ./bin/www"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
