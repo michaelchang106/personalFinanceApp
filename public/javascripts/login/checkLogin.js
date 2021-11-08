@@ -18,7 +18,7 @@ loginPost.addEventListener("submit", async (event) => {
 
   // convert FormData to JSON
   const formDataJSONString = JSON.stringify(plainFormData);
-  console.log(formDataJSONString);
+
   // attempt to FETCH data from database
   try {
     const res = await fetch("/loginPost", {
