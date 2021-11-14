@@ -30,7 +30,7 @@ function dbManager() {
       if (value === null) {
         await user.insertOne(userInfo);
         console.log(`user ${userInfo.userID} added to database`);
-        await actualBudget.insertOne({ userID: userInfo.userID });
+        await actualBudget.insertOne({ userID: userInfo.userID, actualItems: [] });
         return false;
       } else {
         console.log(`user name: ${userInfo.userID} already in use`);
